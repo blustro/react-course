@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 
 import { Fragment } from 'react';
 
-export const OrderDetailsGrid = ({ order }) => {
+export const OrderDetails = ({ order }) => {
   return (
     <div className='order-details-grid'>
       {order.products.map((orderProduct) => {

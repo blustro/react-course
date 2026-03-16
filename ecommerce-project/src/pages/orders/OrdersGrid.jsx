@@ -1,4 +1,4 @@
-import { OrderDetailsGrid } from './OrderDetailsGrid';
+import { OrderDetails } from './OrderDetails';
 import { OrderHeader } from './OrderHeader';
 
 export const OrdersGrid = ({ orders }) => {
@@ -8,7 +8,7 @@ export const OrdersGrid = ({ orders }) => {
         return (
           <div key={order.id} className='order-container'>
             <OrderHeader order={order} />
-            <OrderDetailsGrid order={order} />
+            <OrderDetails order={order} />
           </div>
         );
       })}
