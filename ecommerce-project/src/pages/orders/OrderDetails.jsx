@@ -1,15 +1,34 @@
+import { useState } from 'react';
 import dayjs from 'dayjs';
-
+import axios from 'axios';
 import { Fragment } from 'react';
 
-export const OrderDetails = ({ order }) => {
+export const OrderDetails = ({ order, loadCart }) => {
+  const [addedItems, setAddedItems] = useState({});
+
+  const handleBuyAgain = async (productId) => {
+    await axios.post('/api/cart-items', {
+      productId: productId,
+      quantity: 1,
+    });
+
+    await loadCart();
+
+    setAddedItems((prev) => ({ ...prev, [productId]: true }));
+    setTimeout(() => {
+      setAddedItems((prev) => ({ ...prev, [productId]: false }));
+    }, 2000);
+  };
+
   return (
     <div className='order-details-grid'>
       {order.products.map((orderProduct) => {
+        const isAdded = addedItems[orderProduct.product.id];
+
         return (
           <Fragment key={orderProduct.product.id}>
             <div className='product-image-container'>
-              <img src={orderProduct.product.image} />
+              <img src={orderProduct.product.image} alt='' />
             </div>
 
             <div className='product-details'>
@@ -21,12 +40,23 @@ export const OrderDetails = ({ order }) => {
               <div className='product-quantity'>
                 Quantity: {orderProduct.quantity}
               </div>
-              <button className='buy-again-button button-primary'>
+
+              <button
+                className={`buy-again-button button-primary ${isAdded ? 'added-success' : ''}`}
+                onClick={() => handleBuyAgain(orderProduct.product.id)}
+                disabled={isAdded}
+              >
                 <img
                   className='buy-again-icon'
-                  src='images/icons/buy-again.png'
+                  src={
+                    isAdded
+                      ? 'images/icons/checkmark.png'
+                      : 'images/icons/buy-again.png'
+                  }
                 />
-                <span className='buy-again-message'>Add to Cart</span>
+                <span className='buy-again-message'>
+                  {isAdded ? 'Added!' : 'Add to Cart'}
+                </span>
               </button>
             </div>
 
