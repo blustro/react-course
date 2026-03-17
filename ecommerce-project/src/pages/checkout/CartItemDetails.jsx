@@ -12,7 +12,6 @@ export const CartItemsDetails = ({ cartItem, deliveryOptions, loadCart }) => {
     await loadCart();
   };
 
-  // The Update Method
   const updateCartItem = async () => {
     await axios.put(`/api/cart-items/${cartItem.productId}`, {
       quantity: quantity,
