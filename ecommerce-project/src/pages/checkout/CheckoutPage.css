@@ -207,3 +207,51 @@
   margin-top: 20px;
   margin-bottom: 19px;
 }
+
+.product-quantity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+
+.quantity-input {
+  padding: 5px;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  outline: none;
+  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+}
+
+.quantity-input:focus {
+  border-color: #007185;
+  box-shadow: 0 0 3px 2px rgba(0, 113, 133, 0.15);
+}
+
+.link-primary {
+  color: #017c82;
+  cursor: pointer;
+  user-select: none;
+}
+
+.link-primary:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+
+.save-quantity-link {
+  font-weight: bold;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-input[type='number'] {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
