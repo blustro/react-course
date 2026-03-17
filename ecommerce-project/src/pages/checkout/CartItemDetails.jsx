@@ -1,7 +1,7 @@
 import { formatMoney } from '../../utils/money';
 import { DeliveryOptions } from './DeliveryOptions';
 
-export const CartItemsDetails = ({ cartItem, deliveryOptions }) => {
+export const CartItemsDetails = ({ cartItem, deliveryOptions, loadCart }) => {
   return (
     <div className='cart-item-details-grid'>
       <img className='product-image' src={cartItem.product.image} />
@@ -21,7 +21,11 @@ export const CartItemsDetails = ({ cartItem, deliveryOptions }) => {
         </div>
       </div>
 
-      <DeliveryOptions cartItem={cartItem} deliveryOptions={deliveryOptions} />
+      <DeliveryOptions
+        cartItem={cartItem}
+        deliveryOptions={deliveryOptions}
+        loadCart={loadCart}
+      />
     </div>
   );
 };
