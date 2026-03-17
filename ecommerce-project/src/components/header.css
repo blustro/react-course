@@ -67,6 +67,10 @@
   display: flex;
 }
 
+.header .search-form {
+  display: flex;
+}
+
 .header .search-bar {
   flex: 1;
   width: 0;
