@@ -14,7 +14,7 @@ export const SearchBar = () => {
   return (
     <div>
       <form
-        className='flex bg-gray-900 gap-5 p-10'
+        className='flex bg-gray-900 gap-5 py-10 px-14'
         onSubmit={(e) => {
           submitHandler(e);
         }}
