@@ -1,13 +1,23 @@
 import { SearchBar } from '../components/SearchBar';
 import { Tabs } from '../components/Tabs';
 import { ResultGrid } from '../components/ResultGrid';
+import { useSelector } from 'react-redux';
 
-export const HomePage = () => {
+const HomePage = () => {
+  const { query } = useSelector((store) => store.search);
+
   return (
     <div>
       <SearchBar />
-      <Tabs />
-      <ResultGrid />
+
+      {query !== '' ? (
+        <div>
+          <Tabs />
+          <ResultGrid />
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
