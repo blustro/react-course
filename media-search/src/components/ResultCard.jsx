@@ -1,9 +1,12 @@
-export const ResultCard = ({ item }) => {
-  const addToCollection = (item) => {
-    const oldData = JSON.parse(localStorage.getItem('collection')) || [];
-    const newData = [...oldData, item];
+import { useDispatch } from 'react-redux';
+import { addCollection, addedToast } from '../redux/features/collectionSlice';
 
-    localStorage.setItem('collection', JSON.stringify(newData));
+export const ResultCard = ({ item }) => {
+  const dispatch = useDispatch();
+
+  const addToCollection = (item) => {
+    dispatch(addCollection(item));
+    dispatch(addedToast());
   };
 
   return (
