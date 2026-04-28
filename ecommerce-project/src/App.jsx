@@ -8,6 +8,8 @@ import { OrdersPage } from './pages/orders/OrdersPage';
 import { TrackingPage } from './pages/TrackingPage';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { fetchCart } from './store/cartSlice';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -21,6 +23,12 @@ function App() {
     setTimeout(() => loadCart(), 0);
   }, []);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCart());
+  }, [dispatch]);
+
   return (
     <Routes>
       <Route index element={<HomePage cart={cart} loadCart={loadCart} />} />
@@ -32,10 +40,7 @@ function App() {
         path='orders'
         element={<OrdersPage cart={cart} loadCart={loadCart} />}
       />
-      <Route
-        path='tracking/:orderId/:productId'
-        element={<TrackingPage cart={cart} />}
-      />
+      <Route path='tracking/:orderId/:productId' element={<TrackingPage />} />
     </Routes>
   );
 }

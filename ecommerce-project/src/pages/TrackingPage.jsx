@@ -4,10 +4,13 @@ import { Header } from '../components/Header';
 import './TrackingPage.css';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux'; // 1. Import useSelector
 
-export const TrackingPage = ({ cart }) => {
+export const TrackingPage = () => {
   const { orderId, productId } = useParams();
   const [order, setOrder] = useState(null);
+
+  const cart = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     const fetchTrackingData = async () => {
