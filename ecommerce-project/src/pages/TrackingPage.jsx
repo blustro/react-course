@@ -1,27 +1,39 @@
-import axios from 'axios';
 import { Link, useParams } from 'react-router';
 import { Header } from '../components/Header';
 import './TrackingPage.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import dayjs from 'dayjs';
-import { useSelector } from 'react-redux'; // 1. Import useSelector
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTrackingData, clearTrackingData } from '../store/trackingSlice';
 
 export const TrackingPage = () => {
   const { orderId, productId } = useParams();
-  const [order, setOrder] = useState(null);
+  const dispatch = useDispatch();
 
+  const order = useSelector((state) => state.tracking.order);
+  const status = useSelector((state) => state.tracking.status);
   const cart = useSelector((state) => state.cart.items);
+  const error = useSelector((state) => state.tracking.error);
 
   useEffect(() => {
-    const fetchTrackingData = async () => {
-      const response = await axios.get(`api/orders/${orderId}?expand=products`);
-      setOrder(response.data);
-    };
+    dispatch(fetchTrackingData(orderId));
+    return () => dispatch(clearTrackingData());
+  }, [dispatch, orderId]);
 
-    fetchTrackingData();
-  }, [orderId]);
+  if (status === 'failed') {
+    return (
+      <div className='error-container'>
+        <h2>Oops!</h2>
+        <p>{error}</p>
+        <button onClick={() => dispatch(fetchTrackingData(orderId))}>
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
-  if (!order) return null;
+  if (status === 'loading' || !order)
+    return <div>Loading tracking info...</div>;
 
   const orderProduct = order.products.find(
     (orderProduct) => orderProduct.productId === productId,
@@ -46,7 +58,7 @@ export const TrackingPage = () => {
 
       <div className='tracking-page'>
         <div className='order-tracking'>
-          <Link className='back-to-orders-link link-primary' href='/orders'>
+          <Link className='back-to-orders-link link-primary' to='/orders'>
             View all orders
           </Link>
 
