@@ -15,7 +15,6 @@ export const TrackingPage = () => {
   const dispatch = useDispatch();
 
   const status = useSelector((state) => state.tracking.status);
-  const cart = useSelector((state) => state.cart.items);
   const error = useSelector((state) => state.tracking.error);
   const details = useSelector((state) =>
     selectDeliveryDetails(state, productId),
@@ -34,7 +33,7 @@ export const TrackingPage = () => {
     <>
       <title>Tracking Orders</title>
 
-      <Header cart={cart} />
+      <Header />
 
       <div className='tracking-page'>
         <div className='order-tracking'>
