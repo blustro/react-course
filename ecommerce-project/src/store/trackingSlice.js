@@ -42,3 +42,34 @@ const trackingSlice = createSlice({
 
 export const { clearTrackingData } = trackingSlice.actions;
 export default trackingSlice.reducer;
+
+// SELECTORS
+export const selectTrackingOrder = (state) => state.tracking.order;
+export const selectTrackingStatus = (state) => state.tracking.status;
+export const selectTrackingError = (state) => state.tracking.error;
+
+export const selectDeliveryDetails = (state, productId) => {
+  const order = state.tracking.order;
+  if (!order || !productId) return null;
+
+  const orderProduct = order.products.find(
+    (product) => product.productId === productId,
+  );
+  if (!orderProduct) return null;
+
+  const totalTime = orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
+  const timePassed = Date.now() - order.orderTimeMs;
+
+  let percent = (timePassed / totalTime) * 100;
+  if (percent > 100) percent = 100;
+  if (percent < 0) percent = 0;
+
+  return {
+    ...orderProduct,
+    deliveryPercent: percent,
+    isPreparing: percent < 33,
+    isShipped: percent >= 33 && percent < 100,
+    isDelivered: percent === 100,
+    arrivalText: percent >= 100 ? 'Delivered on' : 'Arriving on',
+  };
+};
