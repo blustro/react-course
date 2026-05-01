@@ -1,16 +1,40 @@
-# React + Vite
+# 🛒 Modern E-commerce Platform (React + Redux)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A high-performance e-commerce frontend refactored for scalable state management.
 
-Currently, two official plugins are available:
+## 📜 Attribution & Credits
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is based on the e-commerce tutorial by **SuperSimpleDev** ([Watch the original here](https://www.youtube.com/watch?v=TtPXvEcE11E)).
 
-## React Compiler
+- **Original Code:** SuperSimpleDev.
+- **Refactor & Modernization:** Bruno Lustro.
+- **Key Contribution:** I transitioned the project from its original prop-drilling state to a professional **Redux Toolkit (RTK)** architecture to demonstrate advanced state management and API synchronization.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Key Features
 
-## Expanding the ESLint configuration
+- **Dynamic Product Grid:** Real-time filtering and search functionality.
+- **Advanced Cart System:** Integrated quantity management and delivery selection.
+- **Complex Checkout Flow:** Dynamic calculation of taxes, shipping, and order totals.
+- **Real-time Order Tracking:** Visual progress tracking based on order timestamps.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- **Frontend:** React 18 (Functional Components & Hooks)
+- **State Management:** Redux Toolkit (RTK) — _Refactored for scalability_
+- **Routing:** React Router v7
+- **HTTP Client:** Axios
+- **Utilities:** Day.js for delivery date formatting
+
+## 🔄 The Evolution: Moving to Redux
+
+The core of my work on this project was a structural pivot to eliminate "Prop Drilling."
+
+- **Centralized Store:** Moved cart and payment logic into a global Redux state.
+- **Async Thunks:** Implemented `createAsyncThunk` for cleaner, predictable API interactions.
+- **Middleware:** Utilized Redux Logger for real-time state change tracking.
+
+## 📅 Future Roadmap
+
+- [ ] **Next.js Migration:** Implementation of SSR (Server-Side Rendering) for SEO.
+- [ ] **TypeScript:** Total refactor for strict type safety.
+- [ ] **Stripe Integration:** Adding real-world payment processing.
