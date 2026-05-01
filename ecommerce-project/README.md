@@ -37,4 +37,3 @@ The core of my work on this project was a structural pivot to eliminate "Prop Dr
 
 - [ ] **Next.js Migration:** Implementation of SSR (Server-Side Rendering) for SEO.
 - [ ] **TypeScript:** Total refactor for strict type safety.
-- [ ] **Stripe Integration:** Adding real-world payment processing.
