@@ -22,6 +22,22 @@ export const addToCart = createAsyncThunk(
   },
 );
 
+export const removeFromCart = createAsyncThunk(
+  'cart/removeFromCart',
+  async (productId, { dispatch }) => {
+    await axios.delete(`/api/cart-items/${productId}`);
+    dispatch(fetchCart());
+  },
+);
+
+export const updateCartItem = createAsyncThunk(
+  'cart/updateCartItem',
+  async ({ productId, updates }) => {
+    const response = await axios.put(`/api/cart-items/${productId}`, updates);
+    return response.data;
+  },
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
@@ -29,18 +45,45 @@ const cartSlice = createSlice({
     summary: null,
     status: 'idle',
   },
+  reducers: {
+    updateLocalDelivery: (state, action) => {
+      const { productId, deliveryOptionId } = action.payload;
+      const item = state.items.find((i) => i.productId === productId);
+      if (item) {
+        item.deliveryOptionId = deliveryOptionId;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCart.fulfilled, (state, action) => {
-      state.items = action.payload.items || [];
-      state.summary = action.payload.summary || null;
+      state.items = action.payload.items;
+      state.summary = action.payload.summary;
       state.status = 'succeeded';
     });
     builder.addCase(addToCart.fulfilled, (state, action) => {
       state.items = action.payload;
       state.status = 'succeeded';
     });
+    builder.addCase(updateCartItem.fulfilled, (state, action) => {
+      const index = state.items.findIndex(
+        (item) => item.productId === action.meta.arg.productId,
+      );
+
+      if (index !== -1) {
+        state.items[index] = {
+          ...state.items[index],
+          ...action.meta.arg.updates,
+        };
+      }
+
+      if (action.payload.summary) {
+        state.summary = action.payload.summary;
+      }
+    });
   },
 });
+
+export const { updateLocalDelivery } = cartSlice.actions;
 
 export default cartSlice.reducer;
 

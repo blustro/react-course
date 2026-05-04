@@ -1,8 +1,11 @@
 import dayjs from 'dayjs';
 import { formatMoney } from '../../utils/money';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { updateLocalDelivery, updateCartItem } from '../../store/cartSlice';
 
-export const DeliveryOptions = ({ cartItem, deliveryOptions, loadCart }) => {
+export const DeliveryOptions = ({ cartItem, deliveryOptions }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className='delivery-options'>
       <div className='delivery-options-title'>Choose a delivery option:</div>
@@ -12,18 +15,29 @@ export const DeliveryOptions = ({ cartItem, deliveryOptions, loadCart }) => {
         if (deliveryOption.priceCents > 0)
           priceString = `${formatMoney(deliveryOption.priceCents)} - Shipping`;
 
-        const updateDeliveryOption = async () => {
-          await axios.put(`/api/cart-items/${cartItem.productId}`, {
-            deliveryOptionId: deliveryOption.id,
-          });
-          await loadCart();
+        const handleOptionChange = () => {
+          // 1. Update UI Instantly
+          dispatch(
+            updateLocalDelivery({
+              productId: cartItem.productId,
+              deliveryOptionId: deliveryOption.id,
+            }),
+          );
+
+          // 2. Update Server in the background
+          dispatch(
+            updateCartItem({
+              productId: cartItem.productId,
+              updates: { deliveryOptionId: deliveryOption.id },
+            }),
+          );
         };
 
         return (
           <div
             key={deliveryOption.id}
             className='delivery-option'
-            onClick={updateDeliveryOption}
+            onClick={handleOptionChange}
           >
             <input
               type='radio'

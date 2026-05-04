@@ -1,23 +1,26 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { formatMoney } from '../../utils/money';
 import { DeliveryOptions } from './DeliveryOptions';
+import { useDispatch } from 'react-redux';
+import { removeFromCart, updateCartItem } from '../../store/cartSlice';
 
-export const CartItemsDetails = ({ cartItem, deliveryOptions, loadCart }) => {
+export const CartItemsDetails = ({ cartItem, deliveryOptions }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [quantity, setQuantity] = useState(cartItem.quantity);
+  const dispatch = useDispatch();
 
-  const deleteCartItem = async () => {
-    await axios.delete(`/api/cart-items/${cartItem.productId}`);
-    await loadCart();
+  const deleteItem = () => {
+    dispatch(removeFromCart(cartItem.productId));
   };
 
-  const updateCartItem = async () => {
-    await axios.put(`/api/cart-items/${cartItem.productId}`, {
-      quantity: quantity,
-    });
+  const saveQuantity = () => {
+    dispatch(
+      updateCartItem({
+        productId: cartItem.productId,
+        updates: { quantity },
+      }),
+    );
     setIsEditing(false);
-    await loadCart();
   };
 
   return (
@@ -58,7 +61,7 @@ export const CartItemsDetails = ({ cartItem, deliveryOptions, loadCart }) => {
             <>
               <span
                 className='save-quantity-link link-primary'
-                onClick={updateCartItem}
+                onClick={saveQuantity}
               >
                 Save
               </span>
@@ -79,18 +82,14 @@ export const CartItemsDetails = ({ cartItem, deliveryOptions, loadCart }) => {
           )}
           <span
             className='delete-quantity-link link-primary'
-            onClick={deleteCartItem}
+            onClick={deleteItem}
           >
             Delete
           </span>
         </div>
       </div>
 
-      <DeliveryOptions
-        cartItem={cartItem}
-        deliveryOptions={deliveryOptions}
-        loadCart={loadCart}
-      />
+      <DeliveryOptions cartItem={cartItem} deliveryOptions={deliveryOptions} />
     </div>
   );
 };
