@@ -1,23 +1,16 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { formatMoney } from '../../utils/money';
 import { useDispatch } from 'react-redux';
-import { fetchCart } from '../../store/cartSlice';
+import { addToCart, fetchCart } from '../../store/cartSlice';
 
-export const Product = ({ product, loadCart }) => {
+export const Product = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const [showAddedMessage, setShowAddedMessage] = useState(false);
-
   const dispatch = useDispatch();
 
-  const addToCart = async () => {
-    await axios.post('/api/cart-items', {
-      productId: product.id,
-      quantity,
-    });
+  const handleAddToCart = async () => {
+    await dispatch(addToCart({ productId: product.id, quantity }));
     dispatch(fetchCart());
-
-    await loadCart();
 
     setShowAddedMessage(true);
     setTimeout(() => {
@@ -79,7 +72,7 @@ export const Product = ({ product, loadCart }) => {
 
       <button
         className='add-to-cart-button button-primary'
-        onClick={addToCart}
+        onClick={handleAddToCart}
         data-testid='add-to-cart-button'
       >
         Add to Cart

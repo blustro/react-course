@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { formatMoney } from '../../utils/money';
 import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCart, selectCartItems } from '../../store/cartSlice';
+import { useEffect, useState } from 'react';
 
-export const PaymentSummary = ({ paymentSummary, loadCart }) => {
-  const navigate = useNavigate();
+export const PaymentSummary = () => {
+  const paymentSummary = useSelector((state) => state.cart.summary);
+  const cartItems = useSelector((state) => state.cart.items);
 
-  const createOrder = async () => {
-    await axios.post('/api/orders');
-    await loadCart();
-    navigate('/orders');
-  };
+  if (!paymentSummary || cartItems.length === 0) {
+    return <div className='payment-summary'>Your cart is empty.</div>;
+  }
 
   return (
     <div className='payment-summary'>
@@ -53,7 +55,7 @@ export const PaymentSummary = ({ paymentSummary, loadCart }) => {
 
           <button
             className='place-order-button button-primary'
-            onClick={createOrder}
+            // onClick={createOrder}
           >
             Place your order
           </button>

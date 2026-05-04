@@ -1,11 +1,15 @@
+import { useSelector } from 'react-redux';
 import { CartItemsDetails } from './CartItemDetails';
 import { DeliveryDate } from './DeliveryDate';
+import { selectCartItems } from '../../store/cartSlice';
 
-export const OrderSummary = ({ cart, deliveryOptions, loadCart }) => {
+export const OrderSummary = ({ deliveryOptions }) => {
+  const cartItems = useSelector(selectCartItems);
+
   return (
     <div className='order-summary'>
       {deliveryOptions.length > 0 &&
-        cart.map((cartItem) => {
+        cartItems.map((cartItem) => {
           const selectedDeliveryOption = deliveryOptions.find(
             (deliveryOption) => {
               return deliveryOption.id === cartItem.deliveryOptionId;
@@ -18,7 +22,6 @@ export const OrderSummary = ({ cart, deliveryOptions, loadCart }) => {
               <CartItemsDetails
                 cartItem={cartItem}
                 deliveryOptions={deliveryOptions}
-                loadCart={loadCart}
               />
             </div>
           );

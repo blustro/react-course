@@ -5,10 +5,14 @@ import './CheckoutPage.css';
 import { CheckoutHeader } from './CheckoutHeader';
 import { OrderSummary } from './OrderSummary';
 import { PaymentSummary } from './PaymentSummary';
+import { useSelector } from 'react-redux';
+import { selectCartItems } from '../../store/cartSlice';
 
-export const CheckoutPage = ({ cart, loadCart }) => {
+export const CheckoutPage = () => {
   const [deliveryOptions, setDeliveryOptions] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
+
+  const cartItems = useSelector(selectCartItems);
 
   useEffect(() => {
     const deliveryOptionsData = async () => {
@@ -28,24 +32,20 @@ export const CheckoutPage = ({ cart, loadCart }) => {
     };
 
     paymentSummaryData();
-  }, [cart]);
+  }, [cartItems]);
 
   return (
     <>
       <title>Checkout</title>
 
-      <CheckoutHeader cart={cart} />
+      <CheckoutHeader />
 
       <div className='checkout-page'>
         <div className='page-title'>Review your order</div>
 
         <div className='checkout-grid'>
-          <OrderSummary
-            cart={cart}
-            deliveryOptions={deliveryOptions}
-            loadCart={loadCart}
-          />
-          <PaymentSummary paymentSummary={paymentSummary} loadCart={loadCart} />
+          <OrderSummary deliveryOptions={deliveryOptions} />
+          <PaymentSummary paymentSummary={paymentSummary} />
         </div>
       </div>
     </>

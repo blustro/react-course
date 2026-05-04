@@ -1,7 +1,8 @@
-export const CheckoutHeader = ({ cart }) => {
-  const totalQuantity = cart.reduce((sum, cartItem) => {
-    return sum + cartItem.quantity;
-  }, 0);
+import { useSelector } from 'react-redux';
+import { selectCartTotalQuantity } from '../../store/cartSlice';
+
+export const CheckoutHeader = () => {
+  const totalQuantity = useSelector(selectCartTotalQuantity);
 
   return (
     <div className='checkout-header'>

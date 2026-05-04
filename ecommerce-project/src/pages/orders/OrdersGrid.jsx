@@ -1,7 +1,12 @@
+import { useDispatch } from 'react-redux';
 import { OrderDetails } from './OrderDetails';
 import { OrderHeader } from './OrderHeader';
+import { fetchCart } from '../../store/cartSlice';
 
-export const OrdersGrid = ({ orders, loadCart }) => {
+export const OrdersGrid = ({ orders }) => {
+  const dispatch = useDispatch();
+  dispatch(fetchCart());
+
   return (
     <div className='orders-grid'>
       {orders.map((order) => {
@@ -12,7 +17,7 @@ export const OrdersGrid = ({ orders, loadCart }) => {
             data-testid='order-container'
           >
             <OrderHeader order={order} />
-            <OrderDetails order={order} loadCart={loadCart} />
+            <OrderDetails order={order} />
           </div>
         );
       })}
