@@ -1,12 +1,14 @@
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import './header.css';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectCartTotalQuantity } from '../store/cartSlice';
+import { setSearchQuery } from '../store/productSlice';
 
 export const Header = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
   const totalQuantity = useSelector(selectCartTotalQuantity);
 
@@ -18,6 +20,7 @@ export const Header = () => {
 
   const searchProducts = () => {
     navigate(`/?search=${search}`);
+    dispatch(setSearchQuery(search));
   };
 
   return (

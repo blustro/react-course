@@ -1,26 +1,31 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Header } from '../../components/Header';
 import { ProductsGrid } from './ProductsGrid';
 import './HomePage.css';
 import { useSearchParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProducts, setSearchQuery } from '../../store/productSlice';
 
 export const HomePage = ({ cart, loadCart }) => {
-  const [products, setProducts] = useState([]);
   const [searchParams] = useSearchParams();
-  const search = searchParams.get('search');
+  const dispatch = useDispatch();
+  const { items, status } = useSelector((state) => state.products);
+
+  const urlSearch = searchParams.get('search') || '';
 
   useEffect(() => {
-    const getHomeData = async () => {
-      const urlPath = search
-        ? `/api/products?search=${search}`
-        : '/api/products';
-      const response = await axios.get(urlPath);
-      setProducts(response.data);
-    };
+    dispatch(setSearchQuery(urlSearch));
+  }, [urlSearch, dispatch]);
 
-    getHomeData();
-  }, [search]);
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchProducts());
+    }
+  }, [status, dispatch]);
+
+  const filteredProducts = items.filter((product) =>
+    product.name.toLowerCase().includes(urlSearch.toLowerCase()),
+  );
 
   return (
     <>
@@ -29,7 +34,7 @@ export const HomePage = ({ cart, loadCart }) => {
       <Header cart={cart} />
 
       <div className='home-page'>
-        <ProductsGrid products={products} loadCart={loadCart} />
+        <ProductsGrid products={filteredProducts} loadCart={loadCart} />
       </div>
     </>
   );
