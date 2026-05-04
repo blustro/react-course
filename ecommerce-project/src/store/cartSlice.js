@@ -32,9 +32,10 @@ export const removeFromCart = createAsyncThunk(
 
 export const updateCartItem = createAsyncThunk(
   'cart/updateCartItem',
-  async ({ productId, updates }) => {
-    const response = await axios.put(`/api/cart-items/${productId}`, updates);
-    return response.data;
+  async ({ productId, updates }, { dispatch }) => {
+    await axios.put(`/api/cart-items/${productId}`, updates);
+
+    dispatch(fetchCart());
   },
 );
 
@@ -76,7 +77,7 @@ const cartSlice = createSlice({
         };
       }
 
-      if (action.payload.summary) {
+      if (action.payload?.summary) {
         state.summary = action.payload.summary;
       }
     });
@@ -89,19 +90,16 @@ export default cartSlice.reducer;
 
 // SELECTORS
 export const selectCartItems = (state) => {
-  if (state.cart.items && Array.isArray(state.cart.items.items)) {
-    return state.cart.items;
-  }
-
-  if (Array.isArray(state.cart.items)) {
-    return state.cart.items;
-  }
-
+  const items = state.cart.items;
+  // If it's a plain array, return it.
+  if (Array.isArray(items)) return items;
+  // If it's nested (from a messy API response), return the inner array.
+  if (items && Array.isArray(items.items)) return items.items;
+  // Always return an array to prevent .map() crashes
   return [];
 };
 
 export const selectCartTotalQuantity = (state) => {
-  const items = state.cart.items;
-  if (!Array.isArray(items)) return 0;
+  const items = selectCartItems(state);
   return items.reduce((total, item) => total + item.quantity, 0);
 };
