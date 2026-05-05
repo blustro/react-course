@@ -12,12 +12,15 @@ export const OrderSummary = () => {
       {deliveryOptions.length > 0 &&
         cartItems.map((cartItem) => {
           const selectedDeliveryOption = deliveryOptions.find(
-            (deliveryOption) => {
-              return deliveryOption.id === cartItem.deliveryOptionId;
-            },
+            (deliveryOption) => deliveryOption.id === cartItem.deliveryOptionId,
           );
+
           return (
-            <div key={cartItem.id} className='cart-item-container'>
+            /* .cart-item-container */
+            <div
+              key={cartItem.id}
+              className='border border-[rgb(222,222,222)] rounded-sm p-4.5 mb-3'
+            >
               <DeliveryDate selectedDeliveryOption={selectedDeliveryOption} />
 
               <CartItemsDetails cartItem={cartItem} />
