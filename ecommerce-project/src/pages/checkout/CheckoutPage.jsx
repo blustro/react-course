@@ -21,8 +21,8 @@ export const CheckoutPage = () => {
 
       <CheckoutHeader />
 
-      <div className='max-w-[1100px] px-[30px] mt-[140px] mb-[100px] mx-auto'>
-        <div className='font-bold text-[22px] mb-[18px]'>Review your order</div>
+      <div className='max-w-275 px-7.5 mt-35 mb-25 mx-auto'>
+        <div className='font-bold text-[22px] mb-4.5'>Review your order</div>
 
         <div className='grid grid-cols-[1fr_350px] gap-x-3 items-start max-[1000px]:grid-cols-1'>
           <OrderSummary />

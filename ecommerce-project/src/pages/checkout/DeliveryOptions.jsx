@@ -45,11 +45,11 @@ export const DeliveryOptions = ({ cartItem }) => {
               checked={deliveryOption.id === cartItem.deliveryOptionId}
               // onChange is handled by the parent div's onClick for a larger tap target
               onChange={() => {}}
-              className='mt-[3px] mr-[5px] cursor-pointer'
+              className='mt-0.75 mr-1.25 cursor-pointer'
               name={`delivery-option-${cartItem.productId}`}
             />
             <div>
-              <div className='font-medium mb-[3px]'>
+              <div className='font-medium mb-0.75'>
                 {dayjs(deliveryOption.estimatedDeliveryTimeMs).format(
                   'dddd, MMMM D',
                 )}
