@@ -43,10 +43,7 @@ export const HomePage = () => {
       <title>Ecommerce Project</title>
 
       <Header />
-
-      <div className='home-page'>
-        <ProductsGrid products={filteredProducts} />
-      </div>
+      <ProductsGrid products={filteredProducts} />
     </>
   );
 };
