@@ -19,7 +19,6 @@ export const DeliveryOptions = ({ cartItem }) => {
           priceString = `${formatMoney(deliveryOption.priceCents)} - Shipping`;
 
         const handleOptionChange = () => {
-          // 1. Update UI Instantly
           dispatch(
             updateLocalDelivery({
               productId: cartItem.productId,
@@ -27,7 +26,6 @@ export const DeliveryOptions = ({ cartItem }) => {
             }),
           );
 
-          // 2. Update Server in the background
           dispatch(
             updateCartItem({
               productId: cartItem.productId,

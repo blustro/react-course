@@ -17,10 +17,6 @@ function App() {
     dispatch(fetchCart());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   setTimeout(() => loadCart(), 0);
-  // }, []);
-
   return (
     <Routes>
       <Route index element={<HomePage />} />
