@@ -54,6 +54,10 @@ const cartSlice = createSlice({
         item.deliveryOptionId = deliveryOptionId;
       }
     },
+    clearCart: (state) => {
+      state.items = [];
+      state.summary = null;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCart.fulfilled, (state, action) => {
@@ -84,7 +88,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { updateLocalDelivery } = cartSlice.actions;
+export const { updateLocalDelivery, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
