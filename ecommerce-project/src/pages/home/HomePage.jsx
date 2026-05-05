@@ -5,11 +5,16 @@ import './HomePage.css';
 import { useSearchParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts, setSearchQuery } from '../../store/productSlice';
+import { fetchCart } from '../../store/cartSlice';
 
-export const HomePage = ({ cart, loadCart }) => {
+export const HomePage = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const { items, status } = useSelector((state) => state.products);
+
+  const { items, status: productStatus } = useSelector(
+    (state) => state.products,
+  );
+  const cartStatus = useSelector((state) => state.cart.status);
 
   const urlSearch = searchParams.get('search') || '';
 
@@ -18,10 +23,16 @@ export const HomePage = ({ cart, loadCart }) => {
   }, [urlSearch, dispatch]);
 
   useEffect(() => {
-    if (status === 'idle') {
+    if (productStatus === 'idle') {
       dispatch(fetchProducts());
     }
-  }, [status, dispatch]);
+  }, [productStatus, dispatch]);
+
+  useEffect(() => {
+    if (cartStatus === 'idle') {
+      dispatch(fetchCart());
+    }
+  }, [cartStatus, dispatch]);
 
   const filteredProducts = items.filter((product) =>
     product.name.toLowerCase().includes(urlSearch.toLowerCase()),
@@ -31,10 +42,10 @@ export const HomePage = ({ cart, loadCart }) => {
     <>
       <title>Ecommerce Project</title>
 
-      <Header cart={cart} />
+      <Header />
 
       <div className='home-page'>
-        <ProductsGrid products={filteredProducts} loadCart={loadCart} />
+        <ProductsGrid products={filteredProducts} />
       </div>
     </>
   );
