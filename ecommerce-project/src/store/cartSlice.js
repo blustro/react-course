@@ -52,10 +52,21 @@ export const placeOrder = createAsyncThunk(
   },
 );
 
+export const fetchDeliveryOptions = createAsyncThunk(
+  'cart/fetchDeliveryOptions',
+  async () => {
+    const response = await axios.get(
+      '/api/delivery-options?expand=estimatedDeliveryTime',
+    );
+    return response.data;
+  },
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     items: [],
+    deliveryOptions: [],
     summary: null,
     status: 'idle',
     error: null,
@@ -123,6 +134,9 @@ const cartSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload;
       });
+    builder.addCase(fetchDeliveryOptions.fulfilled, (state, action) => {
+      state.deliveryOptions = action.payload;
+    });
   },
 });
 

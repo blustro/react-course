@@ -48,7 +48,7 @@ export const CartItemsDetails = ({ cartItem, deliveryOptions }) => {
                 value={quantity}
                 onChange={(event) => setQuantity(Number(event.target.value))}
                 onKeyDown={(event) => {
-                  if (event.key === 'Enter') updateCartItem();
+                  if (event.key === 'Enter') saveQuantity();
                   if (event.key === 'Escape') setIsEditing(false);
                 }}
                 className='quantity-input'

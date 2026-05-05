@@ -3,8 +3,9 @@ import { CartItemsDetails } from './CartItemDetails';
 import { DeliveryDate } from './DeliveryDate';
 import { selectCartItems } from '../../store/cartSlice';
 
-export const OrderSummary = ({ deliveryOptions }) => {
+export const OrderSummary = () => {
   const cartItems = useSelector(selectCartItems);
+  const deliveryOptions = useSelector((state) => state.cart.deliveryOptions);
 
   return (
     <div className='order-summary'>
