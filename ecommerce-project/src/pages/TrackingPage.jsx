@@ -35,44 +35,50 @@ export const TrackingPage = () => {
 
       <Header />
 
-      <div className='tracking-page'>
+      <div className='max-w-212.5 mt-22.5 mb-25 px-7.5 mx-auto'>
         <div className='order-tracking'>
-          <Link className='back-to-orders-link link-primary' to='/orders'>
+          <Link className='inline-block mb-7.5 link-primary' to='/orders'>
             View all orders
           </Link>
 
-          <div className='delivery-date'>
-            {details.arrivalText}
+          <div className='text-[25px] font-bold mb-2.5'>
+            {details.arrivalText}{' '}
             {dayjs(details.estimatedDeliveryTimeMs).format('dddd, MMMM D')}
           </div>
 
-          <div className='product-info'>{details.name}</div>
+          <div className='mb-0.75'>{details.name}</div>
 
-          <div className='product-info'>Quantity: {details.quantity}</div>
+          <div className='mb-0.75'>Quantity: {details.quantity}</div>
 
-          <img className='product-image' src={details.product.image} />
+          <img
+            className='max-w-37.5 max-h-37.5 mt-6.25 mb-12.5'
+            src={details.product.image}
+            alt={details.name}
+          />
 
-          <div className='progress-labels-container'>
+          {/* Progress Labels Container */}
+          <div className='flex justify-between text-[20px] font-medium mb-3.75 max-[575px]:text-[16px] max-[450px]:flex-col max-[450px]:mb-1.25'>
             <div
-              className={`progress-label ${details.isPreparing && 'current-status'}`}
+              className={`max-[450px]:mb-0.75 ${details.isPreparing ? 'text-[rgb(25,135,84)]' : ''}`}
             >
               Preparing
             </div>
             <div
-              className={`progress-label ${details.isShipped && 'current-status'}`}
+              className={`max-[450px]:mb-0.75 ${details.isShipped ? 'text-[rgb(25,135,84)]' : ''}`}
             >
               Shipped
             </div>
             <div
-              className={`progress-label ${details.isDelivered && 'current-status'}`}
+              className={`max-[450px]:mb-0.75 ${details.isDelivered ? 'text-[rgb(25,135,84)]' : ''}`}
             >
               Delivered
             </div>
           </div>
 
-          <div className='progress-bar-container'>
+          {/* Progress Bar Container */}
+          <div className='h-6.25 w-full border border-[rgb(200,200,200)] rounded-[50px] overflow-hidden'>
             <div
-              className='progress-bar'
+              className='h-full bg-[rgb(25,135,84)] rounded-[50px] transition-all duration-500'
               style={{ width: `${details.deliveryPercent}%` }}
             ></div>
           </div>
