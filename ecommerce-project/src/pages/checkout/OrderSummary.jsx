@@ -20,10 +20,7 @@ export const OrderSummary = () => {
             <div key={cartItem.id} className='cart-item-container'>
               <DeliveryDate selectedDeliveryOption={selectedDeliveryOption} />
 
-              <CartItemsDetails
-                cartItem={cartItem}
-                deliveryOptions={deliveryOptions}
-              />
+              <CartItemsDetails cartItem={cartItem} />
             </div>
           );
         })}
