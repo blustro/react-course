@@ -1,30 +1,23 @@
-import axios from 'axios';
 import { formatMoney } from '../../utils/money';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearCart } from '../../store/cartSlice';
+import { placeOrder } from '../../store/cartSlice';
 
 export const PaymentSummary = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const paymentSummary = useSelector((state) => state.cart.summary);
   const cartItems = useSelector((state) => state.cart.items);
+  const orderStatus = useSelector((state) => state.cart.status);
 
-  const createOrder = async () => {
+  const handlePlaceOrder = async () => {
     try {
-      // 1. Post the order to your API
-      await axios.post('/api/orders', {
-        cart: cartItems,
-      });
-
-      // 2. Clear the cart in Redux so it doesn't show old items
-      dispatch(clearCart());
-
-      // 3. Navigate to the orders page
+      await dispatch(placeOrder(cartItems)).unwrap();
       navigate('/orders');
     } catch (error) {
-      console.error('Failed to place order:', error);
-      alert('There was an error placing your order. Please try again.');
+      alert('Failed to place order. Please try again');
+      console.error(error);
     }
   };
 
@@ -74,9 +67,12 @@ export const PaymentSummary = () => {
 
           <button
             className='place-order-button button-primary'
-            onClick={createOrder}
+            onClick={handlePlaceOrder}
+            disabled={orderStatus === 'loading'}
           >
-            Place your order
+            {orderStatus === 'loading'
+              ? 'Placing order...'
+              : 'Place your order'}
           </button>
         </>
       )}

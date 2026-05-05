@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import dayjs from 'dayjs';
-import axios from 'axios';
 import { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../store/cartSlice';
 
-export const OrderDetails = ({ order, loadCart }) => {
+export const OrderDetails = ({ order }) => {
+  const dispatch = useDispatch();
   const [addedItems, setAddedItems] = useState({});
 
   const handleBuyAgain = async (productId) => {
-    await axios.post('/api/cart-items', {
-      productId: productId,
-      quantity: 1,
-    });
+    try {
+      setAddedItems((prev) => ({ ...prev, [productId]: true }));
+      await dispatch(addToCart({ productId, quantity: 1 })).unwrap();
 
-    await loadCart();
-
-    setAddedItems((prev) => ({ ...prev, [productId]: true }));
-    setTimeout(() => {
+      setTimeout(() => {
+        setAddedItems((prev) => ({ ...prev, [productId]: false }));
+      }, 2000);
+    } catch (error) {
       setAddedItems((prev) => ({ ...prev, [productId]: false }));
-    }, 2000);
+      alert('Could not add to cart.');
+      console.error(error);
+    }
   };
 
   return (

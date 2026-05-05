@@ -12,13 +12,13 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
 
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
-  async ({ productId, quantity }) => {
-    const response = await axios.post('/api/cart-items', {
+  async ({ productId, quantity }, { dispatch }) => {
+    await axios.post('/api/cart-items', {
       productId,
       quantity,
     });
 
-    return response.data;
+    dispatch(fetchCart());
   },
 );
 
@@ -39,12 +39,26 @@ export const updateCartItem = createAsyncThunk(
   },
 );
 
+export const placeOrder = createAsyncThunk(
+  'cart/placeorder',
+  async (cartItems, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.post('/api/orders', { cart: cartItems });
+      dispatch(clearCart());
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     items: [],
     summary: null,
     status: 'idle',
+    error: null,
   },
   reducers: {
     updateLocalDelivery: (state, action) => {
@@ -57,6 +71,7 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
       state.summary = null;
+      state.status = 'idle';
     },
   },
   extraReducers: (builder) => {
@@ -65,8 +80,20 @@ const cartSlice = createSlice({
       state.summary = action.payload.summary;
       state.status = 'succeeded';
     });
+
     builder.addCase(addToCart.fulfilled, (state, action) => {
-      state.items = action.payload;
+      if (Array.isArray(action.payload)) {
+        state.items = action.payload;
+      } else if (action.payload && action.payload.productId) {
+        const existingItem = state.items.find(
+          (item) => item.productId === action.payload.productId,
+        );
+        if (existingItem) {
+          existingItem.quantity += action.payload.quantity;
+        } else {
+          state.items.push(action.payload);
+        }
+      }
       state.status = 'succeeded';
     });
     builder.addCase(updateCartItem.fulfilled, (state, action) => {
@@ -85,6 +112,17 @@ const cartSlice = createSlice({
         state.summary = action.payload.summary;
       }
     });
+    builder
+      .addCase(placeOrder.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(placeOrder.fulfilled, (state) => {
+        state.status = 'succeeded';
+      })
+      .addCase(placeOrder.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      });
   },
 });
 
@@ -92,14 +130,10 @@ export const { updateLocalDelivery, clearCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
 
-// SELECTORS
 export const selectCartItems = (state) => {
   const items = state.cart.items;
-  // If it's a plain array, return it.
   if (Array.isArray(items)) return items;
-  // If it's nested (from a messy API response), return the inner array.
   if (items && Array.isArray(items.items)) return items.items;
-  // Always return an array to prevent .map() crashes
   return [];
 };
 
