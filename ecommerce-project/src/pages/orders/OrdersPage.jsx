@@ -19,9 +19,8 @@ export const OrdersPage = () => {
 
       <Header />
 
-      <div className='orders-page'>
-        <div className='page-title'>Your Orders</div>
-
+      <div className='max-w-212.5 mt-10 mb-10 px-5 mx-auto'>
+        <div className='font-bold text-[26px] mb-6.25'>Your Orders</div>
         <OrdersGrid orders={orders} />
       </div>
     </>

@@ -12,19 +12,17 @@ export const OrdersGrid = ({ orders }) => {
   }, [dispatch]);
 
   return (
-    <div className='orders-grid'>
-      {orders.map((order) => {
-        return (
-          <div
-            key={order.id}
-            className='order-container'
-            data-testid='order-container'
-          >
-            <OrderHeader order={order} />
-            <OrderDetails order={order} />
-          </div>
-        );
-      })}
+    <div className='grid grid-cols-1 gap-y-12.5'>
+      {orders.map((order) => (
+        <div
+          key={order.id}
+          className='order-container'
+          data-testid='order-container'
+        >
+          <OrderHeader order={order} />
+          <OrderDetails order={order} />
+        </div>
+      ))}
     </div>
   );
 };
