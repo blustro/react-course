@@ -24,22 +24,24 @@ export const CartItemsDetails = ({ cartItem }) => {
   };
 
   return (
-    <div className='cart-item-details-grid'>
+    <div className='grid grid-cols-[200px_1fr_1fr] gap-x-[25px] max-[1000px]:grid-cols-[100px_1fr] max-[1000px]:row-gap-[30px] max-[450px]:grid-cols-1'>
+      {/* Product Image */}
       <img
-        className='product-image'
+        className='max-w-full max-h-[200px] mx-auto'
         src={cartItem.product.image}
         alt={cartItem.product.name}
       />
 
+      {/* Product Info */}
       <div className='cart-item-details'>
-        <div className='product-name'>{cartItem.product.name}</div>
-        <div className='product-price'>
+        <div className='font-bold mb-2'>{cartItem.product.name}</div>
+        <div className='font-bold mb-[5px]'>
           {formatMoney(cartItem.product.priceCents)}
         </div>
 
-        <div className='product-quantity'>
-          <span>
-            Quantity:{' '}
+        <div className='flex items-center gap-2.5 text-[15px]'>
+          <span className='flex items-center gap-1'>
+            Quantity:
             {isEditing ? (
               <input
                 type='number'
@@ -51,18 +53,16 @@ export const CartItemsDetails = ({ cartItem }) => {
                   if (event.key === 'Enter') saveQuantity();
                   if (event.key === 'Escape') setIsEditing(false);
                 }}
-                className='quantity-input'
+                className='w-12 p-[5px] border border-[#d5d9d9] rounded text-[14px] text-center outline-none shadow-[0_2px_5px_rgba(213,217,217,0.5)] focus:border-[#007185] focus:shadow-[0_0_3px_2px_rgba(0,113,133,0.15)] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
               />
             ) : (
-              <span className='quantity-label'>{cartItem.quantity}</span>
+              <span className='font-normal'>{cartItem.quantity}</span>
             )}
           </span>
+
           {isEditing ? (
-            <>
-              <span
-                className='save-quantity-link link-primary'
-                onClick={saveQuantity}
-              >
+            <div className='flex gap-2'>
+              <span className='font-bold link-primary' onClick={saveQuantity}>
                 Save
               </span>
               <span
@@ -71,19 +71,14 @@ export const CartItemsDetails = ({ cartItem }) => {
               >
                 Cancel
               </span>
-            </>
+            </div>
           ) : (
-            <span
-              className='update-quantity-link link-primary'
-              onClick={() => setIsEditing(true)}
-            >
+            <span className='link-primary' onClick={() => setIsEditing(true)}>
               Update
             </span>
           )}
-          <span
-            className='delete-quantity-link link-primary'
-            onClick={deleteItem}
-          >
+
+          <span className='link-primary' onClick={deleteItem}>
             Delete
           </span>
         </div>

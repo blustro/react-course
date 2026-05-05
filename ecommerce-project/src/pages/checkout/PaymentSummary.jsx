@@ -26,47 +26,47 @@ export const PaymentSummary = () => {
   }
 
   return (
-    <div className='payment-summary'>
-      <div className='payment-summary-title'>Payment Summary</div>
+    <div className='border border-[rgb(222,222,222)] rounded p-[18px] pb-[5px] max-[1000px]:row-start-1 max-[1000px]:mb-3'>
+      <div className='font-bold text-[18px] mb-3'>Payment Summary</div>
       {paymentSummary && (
         <>
-          <div className='payment-summary-row'>
+          <div className='grid grid-cols-[1fr_auto] text-[15px] mb-[9px]'>
             <div>Items ({paymentSummary.totalItems}):</div>
-            <div className='payment-summary-money'>
+            <div className='text-right'>
               {formatMoney(paymentSummary.productCostCents)}
             </div>
           </div>
 
-          <div className='payment-summary-row'>
+          <div className='grid grid-cols-[1fr_auto] text-[15px] mb-[9px]'>
             <div>Shipping &amp; handling:</div>
-            <div className='payment-summary-money'>
+            <div className='text-right'>
               {formatMoney(paymentSummary.shippingCostCents)}
             </div>
           </div>
 
-          <div className='payment-summary-row subtotal-row'>
+          <div className='grid grid-cols-[1fr_auto] text-[15px] mb-[9px] pt-[9px] border-t border-[rgb(222,222,222)]'>
             <div>Total before tax:</div>
-            <div className='payment-summary-money'>
+            <div className='text-right'>
               {formatMoney(paymentSummary.totalCostBeforeTaxCents)}
             </div>
           </div>
 
-          <div className='payment-summary-row'>
+          <div className='grid grid-cols-[1fr_auto] text-[15px] mb-[9px]'>
             <div>Estimated tax (10%):</div>
-            <div className='payment-summary-money'>
+            <div className='text-right'>
               {formatMoney(paymentSummary.taxCents)}
             </div>
           </div>
 
-          <div className='payment-summary-row total-row'>
+          <div className='grid grid-cols-[1fr_auto] text-[18px] font-bold text-[rgb(25,135,84)] pt-[18px] border-t border-[rgb(222,222,222)]'>
             <div>Order total:</div>
-            <div className='payment-summary-money'>
+            <div className='text-right'>
               {formatMoney(paymentSummary.totalCostCents)}
             </div>
           </div>
 
           <button
-            className='place-order-button button-primary'
+            className='w-full py-3 rounded-[5px] mt-5 mb-[19px] button-primary disabled:opacity-50'
             onClick={handlePlaceOrder}
             disabled={orderStatus === 'loading'}
           >
