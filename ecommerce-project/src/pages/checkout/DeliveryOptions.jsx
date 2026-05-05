@@ -1,10 +1,13 @@
 import dayjs from 'dayjs';
 import { formatMoney } from '../../utils/money';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateLocalDelivery, updateCartItem } from '../../store/cartSlice';
 
-export const DeliveryOptions = ({ cartItem, deliveryOptions }) => {
+export const DeliveryOptions = ({ cartItem }) => {
   const dispatch = useDispatch();
+  const deliveryOptions = useSelector((state) => state.cart.deliveryOptions);
+
+  if (!deliveryOptions || deliveryOptions.length === 0) return null;
 
   return (
     <div className='delivery-options'>

@@ -4,7 +4,7 @@ import { DeliveryOptions } from './DeliveryOptions';
 import { useDispatch } from 'react-redux';
 import { removeFromCart, updateCartItem } from '../../store/cartSlice';
 
-export const CartItemsDetails = ({ cartItem, deliveryOptions }) => {
+export const CartItemsDetails = ({ cartItem }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [quantity, setQuantity] = useState(cartItem.quantity);
   const dispatch = useDispatch();
@@ -89,7 +89,7 @@ export const CartItemsDetails = ({ cartItem, deliveryOptions }) => {
         </div>
       </div>
 
-      <DeliveryOptions cartItem={cartItem} deliveryOptions={deliveryOptions} />
+      <DeliveryOptions cartItem={cartItem} />
     </div>
   );
 };
