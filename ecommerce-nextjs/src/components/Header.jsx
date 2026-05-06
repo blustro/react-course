@@ -1,28 +1,35 @@
-import { Link, useNavigate, useSearchParams } from 'react-router';
-import './header.css';
+'use client';
+
+import Link from 'next/link';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCartTotalQuantity } from '../store/cartSlice';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import CategoryDrawer from './CategoryDrawer';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 export const Header = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
   const totalQuantity = useSelector(selectCartTotalQuantity);
 
   const searchText = searchParams.get('search');
   const [search, setSearch] = useState(searchText || '');
+
+  // useEffect(() => {
+  //   setSearch(searchText || '');
+  // }, [searchText]);
+
   const updateSearchInput = (event) => {
     setSearch(event.target.value);
   };
 
   const searchProducts = () => {
-    navigate(`/?search=${search}`);
+    router.push(`/?search=${search}`);
     dispatch(setSearchQuery(search));
     dispatch(setSelectedCategory('All'));
   };
@@ -33,16 +40,20 @@ export const Header = () => {
         {/* Left Section: Logo */}
         <div className='flex items-center w-52 max-[800px]:w-auto'>
           <Link
-            to='/'
+            href='/'
             className='inline-block py-1.5 px-[9.5px] rounded-xs cursor-pointer no-underline border border-transparent hover:border-white transition-colors'
           >
-            <img
+            <Image
               className='h-6.5 mt-px block max-[675px]:hidden'
               src='images/logo-white.png'
+              alt='logo'
+              fill
             />
-            <img
+            <Image
               className='h-6.5 mt-px hidden max-[675px]:block'
               src='images/mobile-logo-white.png'
+              alt='logo-mobile'
+              fill
             />
           </Link>
         </div>
@@ -68,10 +79,12 @@ export const Header = () => {
               className='bg-[rgb(186,255,190)] border-none w-11.25 h-10 rounded-[5px] shrink-0 flex items-center justify-center'
               type='submit'
             >
-              <img
+              <Image
                 className='h-5'
                 src='images/icons/search-icon.png'
                 alt='search'
+                width={20}
+                height={20}
               />
             </button>
           </form>
@@ -81,16 +94,18 @@ export const Header = () => {
         <div className='w-55 shrink-0 flex justify-end gap-4'>
           <Link
             className='flex items-center px-3.25 text-white no-underline border border-transparent hover:border-white rounded-xs'
-            to='/orders'
+            href='/orders'
           >
             <span className='block text-[15px] font-bold'>Orders</span>
           </Link>
 
-          <Link className='relative flex items-center ...' to='/checkout'>
-            <img
+          <Link className='relative flex items-center ...' href='/checkout'>
+            <Image
               className='w-9.5'
               src='images/icons/cart-icon.png'
               alt='cart'
+              width={38}
+              height={38}
             />
 
             <div className='absolute top-0.5 right-1/2 w-6.5 text-center text-[rgb(8,79,45)] text-[14px] font-bold'>
