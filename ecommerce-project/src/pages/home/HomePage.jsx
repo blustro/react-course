@@ -11,9 +11,11 @@ export const HomePage = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
-  const { items, status: productStatus } = useSelector(
-    (state) => state.products,
-  );
+  const {
+    items,
+    status: productStatus,
+    selectedCategory,
+  } = useSelector((state) => state.products);
   const cartStatus = useSelector((state) => state.cart.status);
 
   const urlSearch = searchParams.get('search') || '';
@@ -34,9 +36,17 @@ export const HomePage = () => {
     }
   }, [cartStatus, dispatch]);
 
-  const filteredProducts = items.filter((product) =>
-    product.name.toLowerCase().includes(urlSearch.toLowerCase()),
-  );
+  const filteredProducts = items.filter((product) => {
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(urlSearch.toLowerCase());
+
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      product.keywords.includes(selectedCategory.toLowerCase());
+
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <>
