@@ -1,4 +1,5 @@
 import axiosInstance from '@/utils/axios';
+import ProductList from '@/components/ProductList';
 
 async function getProducts() {
   const res = await axiosInstance.get('/products');

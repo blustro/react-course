@@ -1,6 +1,5 @@
 import axiosInstance from '@/utils/axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
@@ -19,6 +18,10 @@ const productSlice = createSlice({
     selectedCategory: 'All',
   },
   reducers: {
+    setProducts: (state, action) => {
+      state.items = action.payload;
+      state.status = 'succeeded';
+    },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
@@ -34,5 +37,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { setSearchQuery, setSelectedCategory } = productSlice.actions;
+export const { setProducts, setSearchQuery, setSelectedCategory } =
+  productSlice.actions;
 export default productSlice.reducer;

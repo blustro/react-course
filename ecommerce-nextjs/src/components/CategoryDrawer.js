@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import { CATEGORY_MAP } from '../utils/constants';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const CategoryDrawer = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();

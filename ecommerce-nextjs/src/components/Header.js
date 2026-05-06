@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 export const Header = () => {
   const router = useRouter();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const dispatch = useDispatch();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -45,15 +45,17 @@ export const Header = () => {
           >
             <Image
               className='h-6.5 mt-px block max-[675px]:hidden'
-              src='images/logo-white.png'
+              src='/images/logo-white.png'
               alt='logo'
-              fill
+              width={409}
+              height={60}
             />
             <Image
               className='h-6.5 mt-px hidden max-[675px]:block'
-              src='images/mobile-logo-white.png'
+              src='/images/mobile-logo-white.png'
               alt='logo-mobile'
-              fill
+              width={52}
+              height={60}
             />
           </Link>
         </div>
@@ -81,7 +83,7 @@ export const Header = () => {
             >
               <Image
                 className='h-5'
-                src='images/icons/search-icon.png'
+                src='/images/icons/search-icon.png'
                 alt='search'
                 width={20}
                 height={20}
@@ -102,7 +104,7 @@ export const Header = () => {
           <Link className='relative flex items-center ...' href='/checkout'>
             <Image
               className='w-9.5'
-              src='images/icons/cart-icon.png'
+              src='/images/icons/cart-icon.png'
               alt='cart'
               width={38}
               height={38}
