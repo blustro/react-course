@@ -1,11 +1,14 @@
+'use client';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import { CATEGORY_MAP } from '../utils/constants';
-import { useNavigate } from 'react-router';
+import { useRouter } from 'next/router';
 
 const CategoryDrawer = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const router = useRouter();
+
   const activeCategory = useSelector(
     (state) => state.products.selectedCategory,
   );
@@ -13,7 +16,7 @@ const CategoryDrawer = ({ isOpen, onClose }) => {
   const handleCategoryClick = (value) => {
     dispatch(setSelectedCategory(value));
     dispatch(setSearchQuery(''));
-    navigate('/');
+    router.push('/');
     onClose();
   };
 
@@ -21,7 +24,7 @@ const CategoryDrawer = ({ isOpen, onClose }) => {
     <>
       {/* Dark Overlay */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-40 trnasition-opacity ${isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity ${isOpen ? 'opacity-50' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
 
