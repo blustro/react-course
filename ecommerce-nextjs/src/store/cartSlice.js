@@ -1,64 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axiosInstance from '@/utils/axios';
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
-  const cartResponse = await axios.get('/api/cart-items?expand=product');
-  const summaryResponse = await axios.get('/api/payment-summary');
+  const cartResponse = await axiosInstance.get('/cart-items?expand=product');
   return {
     items: cartResponse.data,
-    summary: summaryResponse.data,
+    summary: { totalCents: 0, shippingCents: 0, estimatedTaxCents: 0 },
   };
 });
 
 export const addToCart = createAsyncThunk(
   'cart/addToCart',
   async ({ productId, quantity }, { dispatch }) => {
-    await axios.post('/api/cart-items', {
+    await axiosInstance.post('/cart-items', {
       productId,
       quantity,
     });
 
     dispatch(fetchCart());
-  },
-);
-
-export const removeFromCart = createAsyncThunk(
-  'cart/removeFromCart',
-  async (productId, { dispatch }) => {
-    await axios.delete(`/api/cart-items/${productId}`);
-    dispatch(fetchCart());
-  },
-);
-
-export const updateCartItem = createAsyncThunk(
-  'cart/updateCartItem',
-  async ({ productId, updates }, { dispatch }) => {
-    await axios.put(`/api/cart-items/${productId}`, updates);
-
-    dispatch(fetchCart());
-  },
-);
-
-export const placeOrder = createAsyncThunk(
-  'cart/placeorder',
-  async (cartItems, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await axios.post('/api/orders', { cart: cartItems });
-      dispatch(clearCart());
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  },
-);
-
-export const fetchDeliveryOptions = createAsyncThunk(
-  'cart/fetchDeliveryOptions',
-  async () => {
-    const response = await axios.get(
-      '/api/delivery-options?expand=estimatedDeliveryTime',
-    );
-    return response.data;
   },
 );
 
@@ -72,13 +31,6 @@ const cartSlice = createSlice({
     error: null,
   },
   reducers: {
-    updateLocalDelivery: (state, action) => {
-      const { productId, deliveryOptionId } = action.payload;
-      const item = state.items.find((i) => i.productId === productId);
-      if (item) {
-        item.deliveryOptionId = deliveryOptionId;
-      }
-    },
     clearCart: (state) => {
       state.items = [];
       state.summary = null;
@@ -86,11 +38,19 @@ const cartSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCart.fulfilled, (state, action) => {
-      state.items = action.payload.items;
-      state.summary = action.payload.summary;
-      state.status = 'succeeded';
-    });
+    builder
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.items = action.payload.items;
+        state.summary = action.payload.summary;
+        state.status = 'succeeded';
+      })
+      .addCase(fetchCart.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.status = 'error';
+        state.error = action.error.message;
+      });
 
     builder.addCase(addToCart.fulfilled, (state, action) => {
       if (Array.isArray(action.payload)) {
@@ -107,51 +67,22 @@ const cartSlice = createSlice({
       }
       state.status = 'succeeded';
     });
-    builder.addCase(updateCartItem.fulfilled, (state, action) => {
-      const index = state.items.findIndex(
-        (item) => item.productId === action.meta.arg.productId,
-      );
-
-      if (index !== -1) {
-        state.items[index] = {
-          ...state.items[index],
-          ...action.meta.arg.updates,
-        };
-      }
-
-      if (action.payload?.summary) {
-        state.summary = action.payload.summary;
-      }
-    });
-    builder
-      .addCase(placeOrder.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(placeOrder.fulfilled, (state) => {
-        state.status = 'succeeded';
-      })
-      .addCase(placeOrder.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload;
-      });
-    builder.addCase(fetchDeliveryOptions.fulfilled, (state, action) => {
-      state.deliveryOptions = action.payload;
-    });
   },
 });
 
-export const { updateLocalDelivery, clearCart } = cartSlice.actions;
-
+export const { clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const selectCartItems = (state) => {
-  const items = state.cart.items;
-  if (Array.isArray(items)) return items;
-  if (items && Array.isArray(items.items)) return items.items;
-  return [];
+  // const items = state.cart.items;
+  // if (Array.isArray(items)) return items;
+  // if (items && Array.isArray(items.items)) return items.items;
+  // return [];
+  return state?.cart?.items || [];
 };
 
 export const selectCartTotalQuantity = (state) => {
   const items = selectCartItems(state);
+  if (!Array.isArray(items)) return 0;
   return items.reduce((total, item) => total + item.quantity, 0);
 };

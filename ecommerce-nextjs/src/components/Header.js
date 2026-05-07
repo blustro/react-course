@@ -49,6 +49,8 @@ export const Header = () => {
               alt='logo'
               width={409}
               height={60}
+              priority
+              loading='eager'
             />
             <Image
               className='h-6.5 mt-px hidden max-[675px]:block'
@@ -103,7 +105,7 @@ export const Header = () => {
 
           <Link className='relative flex items-center ...' href='/checkout'>
             <Image
-              className='w-9.5'
+              className='w-9.5 h-9.5'
               src='/images/icons/cart-icon.png'
               alt='cart'
               width={38}

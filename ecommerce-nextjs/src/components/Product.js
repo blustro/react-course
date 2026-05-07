@@ -22,11 +22,12 @@ export const Product = ({ product }) => {
     <div className='pt-10 pb-6.25 px-6.25 border-r border-b border-[rgb(240,240,240)] flex flex-col h-full bg-white'>
       <div className='relative h-45 mb-5 flex justify-center'>
         <Image
+          className='object-contain rounded-[5px] w-auto h-auto'
           src={`/${product.image}`} // Ensure path starts with /
           alt={product.name}
           width={200}
           height={200}
-          className='object-contain rounded-[5px]'
+          loading='eager'
         />
       </div>
 
@@ -69,11 +70,12 @@ export const Product = ({ product }) => {
         className={`text-[rgb(25,135,84)] text-base flex items-center mb-2 transition-opacity duration-200 ${showAddedMessage ? 'opacity-100' : 'opacity-0'}`}
       >
         <Image
+          className='mr-1.5'
           src='/images/icons/checkmark.png'
           alt='added'
           width={20}
           height={20}
-          className='mr-1.5'
+          style={{ width: 'auto', height: 'auto' }}
         />
         Added
       </div>

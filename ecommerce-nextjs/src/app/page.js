@@ -11,7 +11,6 @@ export default async function HomePage() {
 
   return (
     <div className='p-4'>
-      <h1 className='text-2-xl font-bold'>Store</h1>
       <ProductList initialData={initialProducts} />
     </div>
   );
