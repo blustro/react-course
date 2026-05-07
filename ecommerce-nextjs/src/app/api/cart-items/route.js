@@ -1,10 +1,26 @@
 import { NextResponse } from 'next/server';
+import { products } from '@/data/products.json';
 
 // This must be outside the function to persist during your dev session
 let cart = [];
 
 export async function GET(request) {
-  console.log('GET request received at /api/cart');
+  const { searchParams } = new URL(request.url);
+  const expand = searchParams.get('expand');
+
+  if (expand === 'product') {
+    const expandedCart = cart.map((item) => {
+      const productDetails = products.find(
+        (product) => product.id === item.productId,
+      );
+
+      return {
+        ...item,
+        product: productDetails,
+      };
+    });
+    return NextResponse.json(expandedCart);
+  }
   return NextResponse.json(cart);
 }
 
