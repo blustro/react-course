@@ -6,23 +6,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectCartTotalQuantity } from '../store/cartSlice';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import CategoryDrawer from './CategoryDrawer';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 export const Header = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
+  const pathname = usePathname();
+
+  const isHomePage = pathname === '/';
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const totalQuantity = useSelector(selectCartTotalQuantity);
 
   const searchText = searchParams.get('search');
   const [search, setSearch] = useState(searchText || '');
-
-  // useEffect(() => {
-  //   setSearch(searchText || '');
-  // }, [searchText]);
 
   const updateSearchInput = (event) => {
     setSearch(event.target.value);
@@ -119,15 +118,17 @@ export const Header = () => {
             <div className='ml-1.25 text-[15px] font-bold'>Cart</div>
           </Link>
 
-          {/* New Hamburger Menu Button */}
-          <button
-            className='flex flex-col gap-1.5 p-2 rounded-xs border border-transparent hover:border-white transition-colors cursor-pointer'
-            onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-          >
-            <div className='w-6 h-0.5 bg-white'></div>
-            <div className='w-6 h-0.5 bg-white'></div>
-            <div className='w-6 h-0.5 bg-white'></div>
-          </button>
+          {/* Hamburger Menu Button */}
+          {isHomePage && (
+            <button
+              className='flex flex-col gap-1.5 p-2 rounded-xs border border-transparent hover:border-white transition-colors cursor-pointer'
+              onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+            >
+              <div className='w-6 h-0.5 bg-white'></div>
+              <div className='w-6 h-0.5 bg-white'></div>
+              <div className='w-6 h-0.5 bg-white'></div>
+            </button>
+          )}
         </div>
       </div>
 

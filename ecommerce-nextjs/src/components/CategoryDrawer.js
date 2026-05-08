@@ -3,15 +3,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import { CATEGORY_MAP } from '../utils/constants';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 const CategoryDrawer = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
 
   const activeCategory = useSelector(
     (state) => state.products.selectedCategory,
   );
+
+  if (pathname !== '/' && pathname !== '') {
+    return null;
+  }
 
   const handleCategoryClick = (value) => {
     dispatch(setSelectedCategory(value));
@@ -29,7 +34,7 @@ const CategoryDrawer = ({ isOpen, onClose }) => {
       />
 
       {/* Drawer Panel */}
-      <div
+      <aside
         className={`fixed top-0 left-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className='p-5'>
@@ -53,7 +58,7 @@ const CategoryDrawer = ({ isOpen, onClose }) => {
             ))}
           </ul>
         </div>
-      </div>
+      </aside>
     </>
   );
 };
