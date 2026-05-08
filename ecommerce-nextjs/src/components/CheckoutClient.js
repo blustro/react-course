@@ -5,12 +5,15 @@ import { useEffect } from 'react';
 import {
   fetchCart,
   fetchDeliveryOptions,
+  placeOrder,
   selectCartItems,
 } from '@/store/cartSlice';
 import Link from 'next/link';
 import CartItemRow from './CartItemRow';
+import { useRouter } from 'next/navigation';
 
 export default function CheckoutClient() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
   const status = useSelector((state) => state.cart.status);
@@ -30,6 +33,17 @@ export default function CheckoutClient() {
   const totalBeforeTaxCents = productTotalCents + shippingTotalCents;
   const estimatedTaxCents = Math.round(totalBeforeTaxCents * 0.1);
   const orderTotalCents = totalBeforeTaxCents + estimatedTaxCents;
+
+  const handlePlaceOrder = async () => {
+    try {
+      const resultAction = await dispatch(placeOrder());
+      if (placeOrder.fulfilled.match(resultAction)) {
+        router.push('/orders');
+      }
+    } catch (error) {
+      alert('Failed to place order. Please try again.');
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchCart());
@@ -90,7 +104,10 @@ export default function CheckoutClient() {
           <span>${(orderTotalCents / 100).toFixed(2)}</span>
         </div>
 
-        <button className='w-full bg-yellow-400 hover:bg-yellow-500 py-3 rounded-lg mt-6 font-bold shadow transition-colors'>
+        <button
+          className='w-full bg-yellow-400 hover:bg-yellow-500 py-3 rounded-lg mt-6 font-bold shadow transition-colors'
+          onClick={handlePlaceOrder}
+        >
           Place your order
         </button>
       </div>

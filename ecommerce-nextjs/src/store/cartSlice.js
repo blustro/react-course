@@ -45,6 +45,19 @@ export const fetchDeliveryOptions = createAsyncThunk(
   },
 );
 
+export const placeOrder = createAsyncThunk(
+  'cart/placeOrder',
+  async (_, { dispatch }) => {
+    try {
+      const response = await axiosInstance.post('/orders');
+      dispatch(clearCart());
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+);
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
