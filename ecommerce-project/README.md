@@ -2,7 +2,7 @@
 A high-performance e-commerce frontend refactored for scalable state management and utility-first styling.
 
 ## 📜 Attribution & Credits
-This project is based on the e-commerce tutorial by SuperSimpleDev (Watch the original here).
+This project is based on the e-commerce tutorial by SuperSimpleDev (Watch the original [here](https://www.youtube.com/watch?v=TtPXvEcE11E)).
 
 - **Original Code:** SuperSimpleDev.
 - **Refactor & Modernization & Next Migration:** Bruno Lustro.
@@ -11,8 +11,8 @@ This project is based on the e-commerce tutorial by SuperSimpleDev (Watch the or
 ## 🛠️ Key Features & Heavy Lifting
 ### Next.js Migration & API Routing
 - **Full-Stack Transition:** Migrated from a purely client-side React app to Next.js 15+, leveraging API Route Handlers for Cart, Orders, and Tracking logic.
-- **Dynamic Segments:** Implemented professional RESTful patterns using dynamic directory structures (e.g., /api/cart-items/[productId]).
-- **Transactional UX:** Utilized usePathname to create a "focused checkout" experience, dynamically hiding navigation elements like the Category Drawer to reduce customer friction during purchase.
+- **Dynamic Segments:** Implemented professional RESTful patterns using dynamic directory structures (e.g., `/api/cart-items/[productId]`).
+- **Transactional UX:** Utilized `usePathname` to create a "focused checkout" experience, dynamically hiding navigation elements like the Category Drawer to reduce customer friction during purchase.
 
 ### Advanced State Management (RTK)
 - **Scalable Architecture:** Managed global state for products, cart, delivery options, and order history.
@@ -38,4 +38,4 @@ This project is based on the e-commerce tutorial by SuperSimpleDev (Watch the or
 - [x] Next.js Migration: Leveraged Server-Side Rendering (SSR) and optimized API routing.
 - [ ] TypeScript Implementation: (Next Step) Migrating the codebase to TypeScript to ensure strict type safety across all slices and components.
 - [ ] Authentication
-[ ] Payment integration (Stripe)
+- [ ] Payment integration (Stripe)
