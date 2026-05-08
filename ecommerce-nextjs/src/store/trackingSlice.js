@@ -1,10 +1,12 @@
+import axiosInstance from '@/utils/axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 export const fetchTrackingData = createAsyncThunk(
   'tracking/fetchTrackingData',
   async (orderId) => {
-    const response = await axios.get(`api/orders/${orderId}?expand=products`);
+    const response = await axiosInstance.get(
+      `/orders/${orderId}?expand=products`,
+    );
     return response.data;
   },
 );
@@ -30,7 +32,7 @@ const trackingSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchTrackingData.fulfilled, (state, action) => {
-        state.status = 'suceeded';
+        state.status = 'succeeded';
         state.order = action.payload;
       })
       .addCase(fetchTrackingData.rejected, (state, action) => {
@@ -39,14 +41,6 @@ const trackingSlice = createSlice({
       });
   },
 });
-
-export const { clearTrackingData } = trackingSlice.actions;
-export default trackingSlice.reducer;
-
-// SELECTORS
-export const selectTrackingOrder = (state) => state.tracking.order;
-export const selectTrackingStatus = (state) => state.tracking.status;
-export const selectTrackingError = (state) => state.tracking.error;
 
 export const selectDeliveryDetails = (state, productId) => {
   const order = state.tracking.order;
@@ -57,19 +51,23 @@ export const selectDeliveryDetails = (state, productId) => {
   );
   if (!orderProduct) return null;
 
-  const totalTime = orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
-  const timePassed = Date.now() - order.orderTimeMs;
+  const today = Date.now();
+  const orderTime = order.orderTimeMs;
+  const deliveryTime = orderProduct.estimatedDeliveryTimeMs;
 
-  let percent = (timePassed / totalTime) * 100;
-  if (percent > 100) percent = 100;
-  if (percent < 0) percent = 0;
+  const totalDuration = deliveryTime - orderTime;
+  const elapsed = today - orderTime;
+  const percent = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
 
   return {
     ...orderProduct,
+    arrivalText: today < deliveryTime ? 'Arriving on' : 'Delivered on',
     deliveryPercent: percent,
-    isPreparing: percent < 33,
-    isShipped: percent >= 33 && percent < 100,
-    isDelivered: percent === 100,
-    arrivalText: percent >= 100 ? 'Delivered on' : 'Arriving on',
+    isPreparing: percent >= 0 && percent < 50,
+    isShipped: percent >= 50 && percent < 100,
+    isDelivered: percent >= 100,
   };
 };
+
+export const { clearTrackingData } = trackingSlice.actions;
+export default trackingSlice.reducer;
