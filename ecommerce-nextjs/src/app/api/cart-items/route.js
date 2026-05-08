@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { products } from '@/data/products.json';
 
-// This must be outside the function to persist during your dev session
 let cart = [];
 
 export async function GET(request) {
@@ -37,7 +36,7 @@ export async function POST(request) {
       cart.push({
         productId: body.productId,
         quantity: body.quantity || 1,
-        deliveryOptionId: '1', // Default delivery option
+        deliveryOptionId: '1',
       });
     }
 

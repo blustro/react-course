@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCart, selectCartItems } from '@/store/cartSlice';
 import Link from 'next/link';
-import Image from 'next/image';
+import CartItemRow from './CartItemRow';
 
 export default function CheckoutClient() {
   const dispatch = useDispatch();
@@ -39,34 +39,7 @@ export default function CheckoutClient() {
         {cartItems.map((item) => {
           if (!item.product || !item.product.image) return null;
 
-          return (
-            <div
-              key={item.productId}
-              className='flex border p-4 rounded shadow-sm gap-4'
-            >
-              <Image
-                src={
-                  item.product.image.startsWith('/')
-                    ? item.product.image
-                    : `/${item.product.image}`
-                }
-                alt={item.product?.name}
-                width={96}
-                height={96}
-                className='w-24 h-24 object-contain'
-              />
-              <div className='flex-1'>
-                <h3 className='font-bold'>{item.product?.name}</h3>
-                <p className='text-green-700 font-semibold'>
-                  ${((item.product?.priceCents || 0) / 100).toFixed(2)}
-                </p>
-                <p className='text-sm'>Quantity: {item.quantity}</p>
-              </div>
-              <button className='text-red-500 hover:underline h-fit'>
-                Delete
-              </button>
-            </div>
-          );
+          return <CartItemRow key={item.productId} item={item} />;
         })}
       </div>
 
