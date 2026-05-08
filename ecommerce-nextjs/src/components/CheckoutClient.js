@@ -36,30 +36,38 @@ export default function CheckoutClient() {
     <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
       {/* LEFT: Item List */}
       <div className='lg:col-span-2 space-y-4'>
-        {cartItems.map((item) => (
-          <div
-            key={item.productId}
-            className='flex border p-4 rounded shadow-sm gap-4'
-          >
-            <Image
-              src={`/${item.product?.image}`}
-              alt={item.product?.name}
-              width={96}
-              height={96}
-              className='w-24 h-24 object-contain'
-            />
-            <div className='flex-1'>
-              <h3 className='font-bold'>{item.product?.name}</h3>
-              <p className='text-green-700 font-semibold'>
-                ${((item.product?.priceCents || 0) / 100).toFixed(2)}
-              </p>
-              <p className='text-sm'>Quantity: {item.quantity}</p>
+        {cartItems.map((item) => {
+          if (!item.product || !item.product.image) return null;
+
+          return (
+            <div
+              key={item.productId}
+              className='flex border p-4 rounded shadow-sm gap-4'
+            >
+              <Image
+                src={
+                  item.product.image.startsWith('/')
+                    ? item.product.image
+                    : `/${item.product.image}`
+                }
+                alt={item.product?.name}
+                width={96}
+                height={96}
+                className='w-24 h-24 object-contain'
+              />
+              <div className='flex-1'>
+                <h3 className='font-bold'>{item.product?.name}</h3>
+                <p className='text-green-700 font-semibold'>
+                  ${((item.product?.priceCents || 0) / 100).toFixed(2)}
+                </p>
+                <p className='text-sm'>Quantity: {item.quantity}</p>
+              </div>
+              <button className='text-red-500 hover:underline h-fit'>
+                Delete
+              </button>
             </div>
-            <button className='text-red-500 hover:underline h-fit'>
-              Delete
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* RIGHT: Order Summary */}
