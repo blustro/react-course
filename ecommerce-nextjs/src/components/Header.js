@@ -127,7 +127,7 @@ export const Header = () => {
                 aria-label='cart'
               />
               <span
-                className='absolute -top-1 -right-1 bg-amber-500 text-gray-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-between justify-center'
+                className='absolute -top-1 -right-1 bg-amber-500 text-gray-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center'
                 aria-hidden='true' // Hidden because the total count is already read in the parent link's aria-label
               >
                 {totalQuantity}
