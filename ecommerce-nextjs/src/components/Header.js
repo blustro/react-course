@@ -69,8 +69,13 @@ export const Header = () => {
               event.preventDefault();
               searchProducts();
             }}
+            role='search'
           >
+            <label htmlFor='global-search' className='sr-only'>
+              Search products
+            </label>
             <input
+              id='global-search'
               className='flex-1 w-0 text-[16px] h-9.5 pl-3.75 border-none rounded-l-[5px] rounded-r-none text-black'
               type='text'
               placeholder='Search'
@@ -81,6 +86,7 @@ export const Header = () => {
             <button
               className='bg-[rgb(186,255,190)] border-none w-11.25 h-10 rounded-[5px] shrink-0 flex items-center justify-center'
               type='submit'
+              aria-label='Submit search query'
             >
               <Image
                 className='h-5'
@@ -88,13 +94,17 @@ export const Header = () => {
                 alt='search'
                 width={20}
                 height={20}
+                aria-label='Search icon'
               />
             </button>
           </form>
         </nav>
 
         {/* Right Section: Orders & Cart */}
-        <div className='w-55 shrink-0 flex justify-end gap-4'>
+        <nav
+          aria-label='Global User Navigation'
+          className='w-55 shrink-0 flex justify-end gap-4'
+        >
           <Link
             className='flex items-center px-3.25 text-white no-underline border border-transparent hover:border-white rounded-xs'
             href='/orders'
@@ -102,20 +112,27 @@ export const Header = () => {
             <span className='block text-[15px] font-bold'>Orders</span>
           </Link>
 
-          <Link className='relative flex items-center ...' href='/checkout'>
-            <Image
-              className='w-9.5 h-9.5'
-              src='/images/icons/cart-icon.png'
-              alt='cart'
-              width={38}
-              height={38}
-              aria-label='cart'
-            />
-
-            <div className='absolute top-0.5 right-1/2 w-6.5 text-center text-[rgb(8,79,45)] text-[14px] font-bold'>
-              {totalQuantity}
+          <Link
+            className='relative flex items-center ...'
+            href='/checkout'
+            aria-label={`Shopping cart containing ${totalQuantity} items`}
+          >
+            <div className='relative'>
+              <Image
+                className='w-9.5 h-9.5'
+                src='/images/icons/cart-icon.png'
+                alt='cart'
+                width={38}
+                height={38}
+                aria-label='cart'
+              />
+              <span
+                className='absolute -top-1 -right-1 bg-amber-500 text-gray-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-between justify-center'
+                aria-hidden='true' // Hidden because the total count is already read in the parent link's aria-label
+              >
+                {totalQuantity}
+              </span>
             </div>
-
             <div className='ml-1.25 text-[15px] font-bold'>Cart</div>
           </Link>
 
@@ -131,7 +148,7 @@ export const Header = () => {
               <div className='w-6 h-0.5 bg-white'></div>
             </button>
           )}
-        </div>
+        </nav>
       </div>
 
       {/* Spacer for fixed header */}
