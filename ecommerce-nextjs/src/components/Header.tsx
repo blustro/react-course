@@ -2,29 +2,30 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { selectCartTotalQuantity } from '../store/cartSlice';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import CategoryDrawer from './CategoryDrawer';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export const Header = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
 
   const isHomePage = pathname === '/';
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const totalQuantity = useSelector(selectCartTotalQuantity);
+  const totalQuantity = useAppSelector(selectCartTotalQuantity);
 
   const searchText = searchParams.get('search');
   const [search, setSearch] = useState(searchText || '');
 
-  const updateSearchInput = (event) => {
-    setSearch(event.target.value);
+  const updateSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event?.target?.value);
   };
 
   const searchProducts = () => {
@@ -63,14 +64,7 @@ export const Header = () => {
 
         {/* Center Section: Search Bar */}
         <nav className='flex-1 max-w-212.5 mx-2.5 bg-white rounded-[5px]'>
-          <form
-            className='flex'
-            onSubmit={(event) => {
-              event.preventDefault();
-              searchProducts();
-            }}
-            role='search'
-          >
+          <form className='flex' onSubmit={searchProducts} role='search'>
             <label htmlFor='global-search' className='sr-only'>
               Search products
             </label>
