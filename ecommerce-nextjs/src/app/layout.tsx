@@ -1,13 +1,18 @@
 import { Header } from '@/components/Header';
 import { StoreProvider } from '@/store/StoreProvider';
-import './globals.css';
+import { Metadata } from 'next';
+import { ReactNode } from 'react';
 
-export const metadata = {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export const metadata: Metadata = {
   title: 'Ecommerce Project',
   description: 'Built with Next.js and Redux',
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang='en'>
       <body>
