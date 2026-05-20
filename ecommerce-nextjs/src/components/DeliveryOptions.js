@@ -15,7 +15,7 @@ export default function DeliveryOptions({ cartItem }) {
   };
 
   return (
-    <div className='flex flex-col gap-2'>
+    <section className='flex flex-col gap-2'>
       <p className='font-bold text-sm mb-1'>Choose a delivery option:</p>
       {deliveryOptions.map((option) => {
         const isChecked = option.id === (cartItem.deliveryOptionId || '1');
@@ -45,6 +45,6 @@ export default function DeliveryOptions({ cartItem }) {
           </label>
         );
       })}
-    </div>
+    </section>
   );
 }

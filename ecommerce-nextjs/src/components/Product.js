@@ -19,7 +19,7 @@ export const Product = ({ product }) => {
   };
 
   return (
-    <div className='pt-10 pb-6.25 px-6.25 border-r border-b border-[rgb(240,240,240)] flex flex-col h-full bg-white'>
+    <article className='pt-10 pb-6.25 px-6.25 border-r border-b border-[rgb(240,240,240)] flex flex-col h-full bg-white'>
       <div className='relative h-45 mb-5 flex justify-center'>
         <Image
           className='object-contain rounded-[5px] w-auto h-auto'
@@ -86,6 +86,6 @@ export const Product = ({ product }) => {
       >
         Add to Cart
       </button>
-    </div>
+    </article>
   );
 };

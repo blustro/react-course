@@ -20,7 +20,7 @@ export default function OrderDetails({ order }) {
   };
 
   return (
-    <div className='p-6 grid grid-cols-1 md:grid-cols-[120px_1fr_200px] gap-8 items-start bg-white'>
+    <section className='p-6 grid grid-cols-1 md:grid-cols-[120px_1fr_200px] gap-8 items-start bg-white'>
       {order.products.map((orderProduct) => {
         const product = orderProduct.product;
         if (!product) return null;
@@ -49,7 +49,13 @@ export default function OrderDetails({ order }) {
               <div className='font-bold text-lg mb-1'>{product.name}</div>
               <div className='text-gray-700'>
                 Arriving on:
-                {dayjs(orderProduct.estimatedDeliveryTimeMs).format('MMMM D')}
+                <time
+                  dateTime={dayjs(orderProduct.estimatedDeliveryTimeMs).format(
+                    'YYYY-MM-DD',
+                  )}
+                >
+                  {dayjs(orderProduct.estimatedDeliveryTimeMs).format('MMMM D')}
+                </time>
               </div>
               <div className='text-gray-600 mb-4'>
                 Quantity: {orderProduct.quantity}
@@ -74,6 +80,6 @@ export default function OrderDetails({ order }) {
           </div>
         );
       })}
-    </div>
+    </section>
   );
 }

@@ -22,7 +22,7 @@ export default function CartItemRow({ item }) {
   };
 
   return (
-    <div className='flex border p-4 rounded shadow-sm gap-4'>
+    <section className='flex border p-4 rounded shadow-sm gap-4'>
       {/* Product Image & Info Column */}
       <div className='flex flex-1 gap-4'>
         <Image
@@ -93,6 +93,6 @@ export default function CartItemRow({ item }) {
       <div className='w-64 border-l pl-8'>
         <DeliveryOptions cartItem={item} />
       </div>
-    </div>
+    </section>
   );
 }

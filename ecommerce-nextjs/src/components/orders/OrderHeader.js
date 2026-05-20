@@ -7,7 +7,7 @@ export default function OrderHeader({ order }) {
   const orderDate = dayjs(order.orderTimeMs).format('MMMM D');
 
   return (
-    <div className='bg-gray-100 p-4 border-b border-gray-300 grid grid-cols-2 md:grid-cols-[auto_auto_1fr_auto] gap-x-10 gap-y-2 text-sm text-gray-700'>
+    <header className='bg-gray-100 p-4 border-b border-gray-300 grid grid-cols-2 md:grid-cols-[auto_auto_1fr_auto] gap-x-10 gap-y-2 text-sm text-gray-700'>
       {/* Order Placed Date */}
       <div>
         <div className='font-bold uppercase text-xs'>Order Placed:</div>
@@ -30,6 +30,6 @@ export default function OrderHeader({ order }) {
           {order.id}
         </div>
       </div>
-    </div>
+    </header>
   );
 }

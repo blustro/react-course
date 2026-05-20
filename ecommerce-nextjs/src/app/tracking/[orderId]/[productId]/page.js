@@ -41,7 +41,11 @@ export default function TrackingPage({ params }) {
 
       <h1 className='text-3xl font-bold mb-2'>
         {details.arrivalText}{' '}
-        {dayjs(details.estimatedDeliveryTimeMs).format('dddd, MMMM D')}
+        <time
+          dateTime={dayjs(details.estimatedDeliveryTimeMs).format('YYYY-MM-DD')}
+        >
+          {dayjs(details.estimatedDeliveryTimeMs).format('dddd, MMMM D')}
+        </time>
       </h1>
 
       <p className='text-lg text-gray-700 mb-1'>{details.product.name}</p>

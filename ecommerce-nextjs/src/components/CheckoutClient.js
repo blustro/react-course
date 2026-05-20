@@ -54,17 +54,17 @@ export default function CheckoutClient() {
 
   if (cartItems.length === 0) {
     return (
-      <div className='text-center py-10'>
+      <section className='text-center py-10'>
         <p className='mb-4 text-xl'>Your cart is empty</p>
         <Link href='/' className='text-blue-500 hover:underline font-bold'>
           View products to add to your cart
         </Link>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
+    <section className='grid grid-cols-1 lg:grid-cols-3 gap-8'>
       {/* LEFT: Item List */}
       <div className='lg:col-span-2 space-y-4'>
         {cartItems.map(
@@ -111,6 +111,6 @@ export default function CheckoutClient() {
           Place your order
         </button>
       </div>
-    </div>
+    </section>
   );
 }

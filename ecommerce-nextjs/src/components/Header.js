@@ -34,7 +34,7 @@ export const Header = () => {
   };
 
   return (
-    <>
+    <header>
       <div className='bg-[rgb(8,79,45)] text-white px-3.75 flex items-center justify-between fixed top-0 left-0 right-0 h-15 z-50'>
         {/* Left Section: Logo */}
         <div className='flex items-center w-52 max-[800px]:w-auto'>
@@ -62,7 +62,7 @@ export const Header = () => {
         </div>
 
         {/* Center Section: Search Bar */}
-        <div className='flex-1 max-w-212.5 mx-2.5 bg-white rounded-[5px]'>
+        <nav className='flex-1 max-w-212.5 mx-2.5 bg-white rounded-[5px]'>
           <form
             className='flex'
             onSubmit={(event) => {
@@ -91,7 +91,7 @@ export const Header = () => {
               />
             </button>
           </form>
-        </div>
+        </nav>
 
         {/* Right Section: Orders & Cart */}
         <div className='w-55 shrink-0 flex justify-end gap-4'>
@@ -109,6 +109,7 @@ export const Header = () => {
               alt='cart'
               width={38}
               height={38}
+              aria-label='cart'
             />
 
             <div className='absolute top-0.5 right-1/2 w-6.5 text-center text-[rgb(8,79,45)] text-[14px] font-bold'>
@@ -123,6 +124,7 @@ export const Header = () => {
             <button
               className='flex flex-col gap-1.5 p-2 rounded-xs border border-transparent hover:border-white transition-colors cursor-pointer'
               onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+              aria-label='Hamburger Menu'
             >
               <div className='w-6 h-0.5 bg-white'></div>
               <div className='w-6 h-0.5 bg-white'></div>
@@ -139,6 +141,6 @@ export const Header = () => {
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
       />
-    </>
+    </header>
   );
 };

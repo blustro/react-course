@@ -41,10 +41,10 @@ export default function ProductList({ initialData }) {
   });
 
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 border-l border-t border-[rgb(240,240,240)]'>
+    <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 border-l border-t border-[rgb(240,240,240)]'>
       {filteredProducts.map((product) => (
         <Product key={product.id} product={product} />
       ))}
-    </div>
+    </section>
   );
 }
