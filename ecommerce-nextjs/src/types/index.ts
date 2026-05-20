@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   priceCents: number;
+  keywords: string[];
   rating: {
     stars: number;
     count: number;
@@ -56,6 +57,13 @@ export interface UpdateCartArgs {
 
 export interface OrderProduct extends CartItem {
   estimatedDeliveryTimeMs: number;
+}
+
+export interface ProductState {
+  items: Product[];
+  searchQuery: string;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  selectedCategory: string;
 }
 
 export interface TrackingState {
