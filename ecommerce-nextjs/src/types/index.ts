@@ -27,3 +27,29 @@ export interface Order {
   totalCostCents: number;
   products: CartItem[];
 }
+
+export interface AddToCartArgs {
+  productId: string;
+  quantity: number;
+}
+
+export interface AddToCartResponse {
+  productId: string;
+  quantity: number;
+}
+export interface CartState {
+  items: CartItem[];
+  deliveryOptions: DeliveryOption[];
+  summary: {
+    totalCents: number;
+    shippingCents: number;
+    estimatedTaxCents: number;
+  } | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'error';
+  error: string | null | undefined;
+}
+
+export interface UpdateCartArgs {
+  productId: string;
+  updates: { quantity: number };
+}
