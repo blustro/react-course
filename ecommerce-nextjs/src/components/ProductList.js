@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'next/navigation';
-import { setProducts, setSearchQuery } from '@/store/productSlice';
+import { setProducts } from '@/store/productSlice';
 import { fetchCart } from '@/store/cartSlice';
 import { Product } from './Product';
 
@@ -41,10 +41,14 @@ export default function ProductList({ initialData }) {
   });
 
   return (
-    <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 border-l border-t border-[rgb(240,240,240)]'>
-      {filteredProducts.map((product) => (
-        <Product key={product.id} product={product} />
-      ))}
+    <section className='mt-4' aria-label='Product Catalog'>
+      <ul className='list-none p-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 border-l border-t border-[rgb(240,240,240)]'>
+        {filteredProducts.map((product) => (
+          <li key={product.id}>
+            <Product product={product} />
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }
