@@ -59,6 +59,11 @@ export interface OrderProduct extends CartItem {
   estimatedDeliveryTimeMs: number;
 }
 
+export interface OrdersState {
+  list: Order[];
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
+
 export interface ProductState {
   items: Product[];
   searchQuery: string;
