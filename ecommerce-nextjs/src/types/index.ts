@@ -25,7 +25,7 @@ export interface Order {
   id: string;
   orderTimeMs: number;
   totalCostCents: number;
-  products: CartItem[];
+  products: OrderProduct[];
 }
 
 export interface AddToCartArgs {
@@ -52,4 +52,14 @@ export interface CartState {
 export interface UpdateCartArgs {
   productId: string;
   updates: { quantity: number };
+}
+
+export interface OrderProduct extends CartItem {
+  estimatedDeliveryTimeMs: number;
+}
+
+export interface TrackingState {
+  order: Order | null;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  error: string | null;
 }

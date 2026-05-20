@@ -1,23 +1,32 @@
 import axiosInstance from '@/utils/axios';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Order, TrackingState } from '@/types';
+import { RootState } from './store';
 
-export const fetchTrackingData = createAsyncThunk(
-  'tracking/fetchTrackingData',
-  async (orderId) => {
-    const response = await axiosInstance.get(
+const initialState: TrackingState = {
+  order: null,
+  status: 'idle',
+  error: null,
+};
+
+export const fetchTrackingData = createAsyncThunk<
+  Order,
+  string,
+  { rejectValue: string }
+>('tracking/fetchTrackingData', async (orderId, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.get<Order>(
       `/orders/${orderId}?expand=products`,
     );
     return response.data;
-  },
-);
+  } catch (error) {
+    return rejectWithValue('Failed to fetch tracking data');
+  }
+});
 
 const trackingSlice = createSlice({
   name: 'tracking',
-  initialState: {
-    order: null,
-    status: 'idle',
-    error: null,
-  },
+  initialState,
   reducers: {
     clearTrackingData: (state) => {
       state.order = null;
@@ -31,18 +40,24 @@ const trackingSlice = createSlice({
         state.status = 'loading';
         state.error = null;
       })
-      .addCase(fetchTrackingData.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.order = action.payload;
-      })
+      .addCase(
+        fetchTrackingData.fulfilled,
+        (state, action: PayloadAction<Order>) => {
+          state.status = 'succeeded';
+          state.order = action.payload;
+        },
+      )
       .addCase(fetchTrackingData.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Something went wrong';
+        state.error = action.payload || 'Something went wrong';
       });
   },
 });
 
-export const selectDeliveryDetails = (state, productId) => {
+export const { clearTrackingData } = trackingSlice.actions;
+export default trackingSlice.reducer;
+
+export const selectDeliveryDetails = (state: RootState, productId: string) => {
   const order = state.tracking.order;
   if (!order || !productId) return null;
 
@@ -68,6 +83,3 @@ export const selectDeliveryDetails = (state, productId) => {
     isDelivered: percent >= 100,
   };
 };
-
-export const { clearTrackingData } = trackingSlice.actions;
-export default trackingSlice.reducer;
