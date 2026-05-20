@@ -18,12 +18,16 @@ export const Product = ({ product }) => {
     setTimeout(() => setShowAddedMessage(false), 2000);
   };
 
+  const displayPrice = (product.priceCents / 100).toFixed(2);
+
   return (
     <article className='pt-10 pb-6.25 px-6.25 border-r border-b border-[rgb(240,240,240)] flex flex-col h-full bg-white'>
       <div className='relative h-45 mb-5 flex justify-center'>
         <Image
           className='object-contain rounded-[5px] w-auto h-auto'
-          src={`/${product.image}`} // Ensure path starts with /
+          src={
+            product.image.startsWith('/') ? product.image : `/${product.image}`
+          }
           alt={product.name}
           width={200}
           height={200}
@@ -31,11 +35,14 @@ export const Product = ({ product }) => {
         />
       </div>
 
-      <div className='min-h-10 mb-1.25 line-clamp-2 leading-tight text-sm'>
+      <h3 className='min-h-10 mb-1.25 line-clamp-2 leading-tight text-sm'>
         {product.name}
-      </div>
+      </h3>
 
-      <div className='flex items-center mb-2.5'>
+      <div
+        className='flex items-center mb-2.5'
+        aria-label={`Rated ${product.rating.stars} out of 5 stars based on ${product.rating.count} reviews`}
+      >
         <Image
           src={`/images/ratings/rating-${product.rating.stars * 10}.png`}
           alt='rating'
@@ -48,7 +55,10 @@ export const Product = ({ product }) => {
         </div>
       </div>
 
-      <div className='font-bold mb-2.5'>{formatMoney(product.priceCents)}</div>
+      {/* Price layout */}
+      <div className='text-lg font-bold text-gray-900 mb-4'>
+        <span className='sr-only'>Price: </span>${displayPrice}
+      </div>
 
       <div className='mb-4.25'>
         <select
@@ -83,6 +93,7 @@ export const Product = ({ product }) => {
       <button
         className='w-full p-2 h-8.5 button-primary transition-colors'
         onClick={handleAddToCart}
+        aria-label={`Add ${product.name} to shopping cart`}
       >
         Add to Cart
       </button>
