@@ -6,12 +6,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { useAppDispatch } from '@/store/hooks';
+import { Order } from '@/types';
 
-export default function OrderDetails({ order }) {
-  const dispatch = useDispatch();
-  const [addedItems, setAddedItems] = useState({});
+interface OrderDetailsProps {
+  order: Order;
+}
 
-  const handleBuyAgain = async (productId) => {
+export default function OrderDetails({ order }: OrderDetailsProps) {
+  const dispatch = useAppDispatch();
+  const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
+
+  const handleBuyAgain = async (productId: string) => {
     setAddedItems((prev) => ({ ...prev, [productId]: true }));
     await dispatch(addToCart({ productId, quantity: 1 }));
     setTimeout(() => {
