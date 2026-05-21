@@ -1,6 +1,6 @@
 'use client';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import {
   fetchCart,
@@ -11,13 +11,14 @@ import {
 import Link from 'next/link';
 import CartItemRow from './CartItemRow';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
 export default function CheckoutClient() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const cartItems = useSelector(selectCartItems);
-  const status = useSelector((state) => state.cart.status);
-  const deliveryOptions = useSelector((state) => state.cart.deliveryOptions);
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector(selectCartItems);
+  const status = useAppSelector((state) => state.cart.status);
+  const deliveryOptions = useAppSelector((state) => state.cart.deliveryOptions);
 
   // Business Logic Calculations (Keep as is)
   const productTotalCents = cartItems.reduce(
