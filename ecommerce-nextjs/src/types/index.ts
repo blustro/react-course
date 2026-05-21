@@ -53,7 +53,7 @@ export interface CartState {
 
 export interface UpdateCartArgs {
   productId: string;
-  updates: { quantity: number };
+  updates: { quantity?: number; deliveryOptionId?: string };
 }
 
 export interface OrderProduct extends CartItem {

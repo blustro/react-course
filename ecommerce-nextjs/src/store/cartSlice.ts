@@ -31,11 +31,11 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
 export const addToCart = createAsyncThunk<
   AddToCartResponse,
   AddToCartArgs,
-  { rejectValue: string } // Explicitly define the config
+  { rejectValue: string }
 >('cart/addToCart', async ({ productId, quantity }, { rejectWithValue }) => {
   try {
     await axiosInstance.post('/cart-items', { productId, quantity });
-    return { productId, quantity }; // Now matches AddToCartResponse
+    return { productId, quantity };
   } catch (error) {
     return rejectWithValue('Could not add to cart');
   }
@@ -126,12 +126,11 @@ const cartSlice = createSlice({
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        // Construct the full object to satisfy the CartItem interface
         state.items.push({
           productId,
           quantity,
-          deliveryOptionId: '1', // Default value
-          product: undefined, // It will be populated by the next fetchCart
+          deliveryOptionId: '1',
+          product: undefined,
         });
       }
       state.status = 'succeeded';
@@ -139,6 +138,19 @@ const cartSlice = createSlice({
 
     builder.addCase(fetchDeliveryOptions.fulfilled, (state, action) => {
       state.deliveryOptions = action.payload;
+    });
+
+    builder.addCase(updateCartItem.fulfilled, (state, action) => {
+      const index = state.items.findIndex(
+        (item) => item.productId === action.meta.arg.productId,
+      );
+
+      if (index !== -1) {
+        state.items[index] = {
+          ...state.items[index],
+          ...action.meta.arg.updates,
+        };
+      }
     });
   },
 });

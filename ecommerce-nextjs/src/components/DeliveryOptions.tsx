@@ -1,11 +1,16 @@
 import { updateCartItem } from '@/store/cartSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { CartItem } from '@/types';
 
-export default function DeliveryOptions({ cartItem }) {
-  const dispatch = useDispatch();
-  const deliveryOptions = useSelector((state) => state.cart.deliveryOptions);
+interface DeliveryOptionsPros {
+  cartItem: CartItem;
+}
 
-  const handleDeliveryChange = (optionId) => {
+export default function DeliveryOptions({ cartItem }: DeliveryOptionsPros) {
+  const dispatch = useAppDispatch();
+  const deliveryOptions = useAppSelector((state) => state.cart.deliveryOptions);
+
+  const handleDeliveryChange = (optionId: string) => {
     dispatch(
       updateCartItem({
         productId: cartItem.productId,
