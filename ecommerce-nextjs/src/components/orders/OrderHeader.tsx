@@ -1,8 +1,13 @@
 'use client';
 
+import { Order } from '@/types';
 import dayjs from 'dayjs';
 
-export default function OrderHeader({ order }) {
+interface OrderHeaderProps {
+  order: Order;
+}
+
+export default function OrderHeader({ order }: OrderHeaderProps) {
   const totalCents = order.totalCostCents || 0;
 
   const machineReadableDate = dayjs(order.orderTimeMs).format('YYYY-MM-DD');
