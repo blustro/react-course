@@ -1,16 +1,21 @@
 'use client';
 
-import { useDispatch, useSelector } from 'react-redux';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import { CATEGORY_MAP } from '../utils/constants';
 import { usePathname, useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-const CategoryDrawer = ({ isOpen, onClose }) => {
-  const dispatch = useDispatch();
+interface CategoryDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const CategoryDrawer = ({ isOpen, onClose }: CategoryDrawerProps) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
 
-  const activeCategory = useSelector(
+  const activeCategory = useAppSelector(
     (state) => state.products.selectedCategory,
   );
 
@@ -18,7 +23,7 @@ const CategoryDrawer = ({ isOpen, onClose }) => {
     return null;
   }
 
-  const handleCategoryClick = (value) => {
+  const handleCategoryClick = (value: string) => {
     dispatch(setSelectedCategory(value));
     dispatch(setSearchQuery(''));
     router.push('/');
