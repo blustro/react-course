@@ -3,13 +3,20 @@
 import { updateCartItem, removeFromCart } from '@/store/cartSlice';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import DeliveryOptions from './DeliveryOptions';
+import { useAppDispatch } from '@/store/hooks';
+import { CartItem } from '@/types';
 
-export default function CartItemRow({ item }) {
+interface CartItemRowProps {
+  item: CartItem;
+}
+
+export default function CartItemRow({ item }: CartItemRowProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [quantity, setQuantity] = useState(item.quantity);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  if (!item.product) return null;
 
   const handleSave = () => {
     dispatch(
@@ -40,7 +47,7 @@ export default function CartItemRow({ item }) {
         <div className='flex-1'>
           <h3 className='font-bold'>{item.product.name}</h3>
           <p className='text-green-700 font-semibold'>
-            ${(item.product.priceCents / 100).toFixed(2)}
+            ${(item?.product?.priceCents / 100).toFixed(2)}
           </p>
 
           <div className='flex items-center gap-2 mt-2 text-sm'>
