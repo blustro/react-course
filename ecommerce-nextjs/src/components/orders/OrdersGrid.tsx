@@ -1,7 +1,12 @@
+import { Order } from '@/types';
 import OrderDetails from './OrderDetails';
 import OrderHeader from './OrderHeader';
 
-export default function OrdersGrid({ orders }) {
+interface OrdersGridProps {
+  orders: Order[];
+}
+
+export default function OrdersGrid({ orders }: OrdersGridProps) {
   if (orders.length === 0) return <p>No orders found.</p>;
 
   return (
