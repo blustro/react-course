@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   clearTrackingData,
   fetchTrackingData,
@@ -9,20 +10,28 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { use, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-export default function TrackingPage({ params }) {
+interface TrackingPageProps {
+  params: Promise<{
+    orderId: string;
+    productId: string;
+  }>;
+}
+
+export default function TrackingPage({ params }: TrackingPageProps) {
   const { orderId, productId } = use(params);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const status = useSelector((state) => state.tracking.status);
-  const details = useSelector((state) =>
+  const status = useAppSelector((state) => state.tracking.status);
+  const details = useAppSelector((state) =>
     selectDeliveryDetails(state, productId),
   );
 
   useEffect(() => {
     dispatch(fetchTrackingData(orderId));
-    return () => dispatch(clearTrackingData());
+    return () => {
+      dispatch(clearTrackingData());
+    };
   }, [dispatch, orderId]);
 
   if (status === 'loading' || !details)
@@ -37,6 +46,10 @@ export default function TrackingPage({ params }) {
         Failed to load.
       </div>
     );
+
+  if (!details.product) {
+    return <div>Product details not available.</div>;
+  }
 
   return (
     <main className='max-w-3xl mx-auto mt-10 px-6'>
@@ -110,9 +123,9 @@ export default function TrackingPage({ params }) {
         <div
           className='w-full h-8 bg-gray-200 rounded-full border border-gray-300 overflow-hidden'
           role='progressbar'
-          aria-valuenow={Math.round(details.deliveryPercent)}
-          aria-valuemin='0'
-          aria-valuemax='100'
+          aria-valuenow={Math.round(details.deliveryPercent)} // This was already a number
+          aria-valuemin={0} // Removed quotes: '0' -> 0
+          aria-valuemax={100} // Removed quotes: '100' -> 100
           aria-label='Order delivery progress percentage'
         >
           <div
