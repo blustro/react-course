@@ -1,18 +1,23 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'next/navigation';
 import { setProducts } from '@/store/productSlice';
 import { fetchCart } from '@/store/cartSlice';
-import { Product } from './Product';
+import { ProductCard } from './ProductCard';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { Product } from '@/types';
 
-export default function ProductList({ initialData }) {
-  const dispatch = useDispatch();
+interface ProductListProps {
+  initialData: Product[];
+}
+
+export default function ProductList({ initialData }: ProductListProps) {
+  const dispatch = useAppDispatch();
   const searchParams = useSearchParams();
 
-  const { items, selectedCategory } = useSelector((state) => state.products);
-  const cartStatus = useSelector((state) => state.cart.status);
+  const { items, selectedCategory } = useAppSelector((state) => state.products);
+  const cartStatus = useAppSelector((state) => state.cart.status);
 
   const urlSearch = searchParams.get('search') || '';
 
@@ -45,7 +50,7 @@ export default function ProductList({ initialData }) {
       <ul className='list-none p-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 border-l border-t border-[rgb(240,240,240)]'>
         {filteredProducts.map((product) => (
           <li key={product.id}>
-            <Product product={product} />
+            <ProductCard product={product} />
           </li>
         ))}
       </ul>

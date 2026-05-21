@@ -1,15 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { formatMoney } from '@/utils/money';
-import { useDispatch } from 'react-redux';
 import { addToCart, fetchCart } from '@/store/cartSlice';
 import Image from 'next/image';
+import { Product } from '@/types';
+import { useAppDispatch } from '@/store/hooks';
 
-export const Product = ({ product }) => {
+interface ProductProps {
+  product: Product;
+}
+
+export const ProductCard = ({ product }: ProductProps) => {
   const [quantity, setQuantity] = useState(1);
   const [showAddedMessage, setShowAddedMessage] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleAddToCart = async () => {
     await dispatch(addToCart({ productId: product.id, quantity }));
