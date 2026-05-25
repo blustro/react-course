@@ -1,8 +1,9 @@
+import { Order } from '@/types';
 import { NextResponse } from 'next/server';
 
-let orders = [];
+let orders: Order[] = [];
 
-export async function POST(request) {
+export async function POST(request: Request) {
   const newOrder = {
     id: crypto.randomUUID(),
     orderTimeMs: Date.now(),

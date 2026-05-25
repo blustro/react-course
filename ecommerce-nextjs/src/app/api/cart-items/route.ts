@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { products } from '@/data/products.json';
+import products from '@/data/products.json';
+import { CartItem } from '@/types';
 
-let cart = [];
+let cart: CartItem[] = [];
 
-export async function GET(request) {
+export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const expand = searchParams.get('expand');
 
@@ -23,7 +24,7 @@ export async function GET(request) {
   return NextResponse.json(cart);
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
     console.log('POST request body:', body);
