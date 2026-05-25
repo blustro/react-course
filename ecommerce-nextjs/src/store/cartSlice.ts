@@ -160,5 +160,7 @@ export default cartSlice.reducer;
 
 import { RootState } from './store';
 export const selectCartItems = (state: RootState) => state.cart.items;
-export const selectCartTotalQuantity = (state: RootState) =>
-  state.cart.items.reduce((total, item) => total + item.quantity, 0);
+export const selectCartTotalQuantity = (state: RootState) => {
+  const items = state.cart?.items || [];
+  return items.reduce((total, item) => total + item.quantity, 0);
+};

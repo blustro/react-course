@@ -21,11 +21,12 @@ export default function CheckoutClient() {
   const deliveryOptions = useAppSelector((state) => state.cart.deliveryOptions);
 
   // Business Logic Calculations (Keep as is)
-  const productTotalCents = cartItems.reduce(
+  const items = cartItems || [];
+  const productTotalCents = items.reduce(
     (acc, item) => acc + (item.product?.priceCents || 0) * item.quantity,
     0,
   );
-  const shippingTotalCents = cartItems.reduce((acc, item) => {
+  const shippingTotalCents = items.reduce((acc, item) => {
     const selectedOption = deliveryOptions.find(
       (option) => option.id === (item.deliveryOptionId || '1'),
     );
@@ -51,7 +52,7 @@ export default function CheckoutClient() {
 
   if (status === 'loading') return <p role='status'>Loading your cart...</p>;
 
-  if (cartItems.length === 0) {
+  if (items.length === 0) {
     return (
       <main className='text-center py-10'>
         <h1 className='text-xl mb-4'>Your cart is empty</h1>
