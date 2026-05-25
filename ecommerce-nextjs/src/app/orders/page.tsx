@@ -1,14 +1,15 @@
 'use client';
 
 import OrdersGrid from '@/components/orders/OrdersGrid';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchOrders } from '@/store/ordersSlice';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function OrdersPage() {
-  const dispatch = useDispatch();
-  const orders = useSelector((state) => state.orders.list);
-  const status = useSelector((state) => state.orders.status);
+  const dispatch = useAppDispatch();
+  const orders = useAppSelector((state) => state.orders.list);
+  const status = useAppSelector((state) => state.orders.status);
 
   useEffect(() => {
     dispatch(fetchOrders());

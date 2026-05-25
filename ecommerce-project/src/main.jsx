@@ -2,11 +2,12 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { store } from './store/store'; // Remove .js extension for TS
 import './index.css';
-import App from './App.jsx';
+import App from './App'; // Remove .jsx extension for TS
 
-createRoot(document.getElementById('root')).render(
+// The '!' tells TypeScript: "I promise this element exists"
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
