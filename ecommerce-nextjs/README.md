@@ -21,7 +21,7 @@ cd react-course
 
 ```
 
-## Run the Backend:
+Run the Backend:
 
 Open a new terminal window, navigate to the backend directory, and start the server:
 
@@ -33,7 +33,7 @@ npm run dev
 
 Run the Frontend:
 
-## Open another terminal window, navigate to the frontend directory, and start the application:
+Open another terminal window, navigate to the frontend directory, and start the application:
 
 ```
 cd ecommerce-nextjs
