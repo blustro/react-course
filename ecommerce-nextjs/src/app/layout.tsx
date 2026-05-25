@@ -2,6 +2,7 @@ import { Header } from '@/components/Header';
 import { StoreProvider } from '@/store/StoreProvider';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
+import '../index.css';
 
 interface RootLayoutProps {
   children: ReactNode;
