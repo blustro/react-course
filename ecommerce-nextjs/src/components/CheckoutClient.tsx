@@ -1,6 +1,5 @@
 'use client';
 
-import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import {
   fetchCart,
