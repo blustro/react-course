@@ -16,10 +16,23 @@ export const ProductCard = ({ product }: ProductProps) => {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = async () => {
-    await dispatch(addToCart({ productId: product.id, quantity }));
-    dispatch(fetchCart());
-    setShowAddedMessage(true);
-    setTimeout(() => setShowAddedMessage(false), 2000);
+    // 1. Wait for the server to confirm the item was added
+    const resultAction = await dispatch(
+      addToCart({ productId: product.id, quantity }),
+    );
+
+    // 2. Only proceed if the action was successful
+    if (addToCart.fulfilled.match(resultAction)) {
+      // 3. NOW fetch the fresh cart state from the server
+      await dispatch(fetchCart());
+
+      // 4. Show the message
+      setShowAddedMessage(true);
+      setTimeout(() => setShowAddedMessage(false), 2000);
+    } else {
+      // Handle error (optional)
+      console.error('Failed to add to cart');
+    }
   };
 
   const displayPrice = (product.priceCents / 100).toFixed(2);

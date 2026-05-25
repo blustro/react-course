@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { selectCartTotalQuantity } from '../store/cartSlice';
 import { setSearchQuery, setSelectedCategory } from '../store/productSlice';
 import CategoryDrawer from './CategoryDrawer';
@@ -20,6 +19,10 @@ export const Header = () => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const totalQuantity = useAppSelector(selectCartTotalQuantity);
+
+  useEffect(() => {
+    console.log('Header detected new total:', totalQuantity);
+  }, [totalQuantity]);
 
   const searchText = searchParams.get('search');
   const [search, setSearch] = useState(searchText || '');

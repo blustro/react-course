@@ -17,15 +17,10 @@ const initialState: CartState = {
 };
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async () => {
-  const response = await axiosInstance.get<{
-    items: CartItem[];
-    summary: {
-      totalCents: number;
-      shippingCents: number;
-      estimatedTaxCents: number;
-    };
-  }>('/cart-items?expand=product');
-  return response.data;
+  const response = await axiosInstance.get<CartItem[]>(
+    '/cart-items?expand=product',
+  );
+  return response.data; // This is now correctly typed as CartItem[]
 });
 
 export const addToCart = createAsyncThunk<
@@ -95,19 +90,10 @@ const cartSlice = createSlice({
       })
       .addCase(
         fetchCart.fulfilled,
-        (
-          state,
-          action: PayloadAction<{
-            items: CartItem[];
-            summary: {
-              totalCents: number;
-              shippingCents: number;
-              estimatedTaxCents: number;
-            };
-          }>,
-        ) => {
-          state.items = action.payload.items;
-          state.summary = action.payload.summary;
+        (state, action: PayloadAction<CartItem[]>) => {
+          console.log('API Response:', action.payload);
+          state.items = action.payload;
+          state.summary = null;
           state.status = 'succeeded';
         },
       )
@@ -119,14 +105,15 @@ const cartSlice = createSlice({
     builder.addCase(addToCart.fulfilled, (state, action) => {
       const { productId, quantity } = action.payload;
 
-      const existingItem = state.items.find(
-        (item) => item.productId === productId,
-      );
+      // Use state.items directly, do not create a local 'items' variable
+      const items = state?.items || [];
+      const existingItem = items.find((item) => item.productId === productId);
 
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        state.items.push({
+        // Redux Toolkit uses Immer under the hood; .push() is safe here
+        items.push({
           productId,
           quantity,
           deliveryOptionId: '1',
