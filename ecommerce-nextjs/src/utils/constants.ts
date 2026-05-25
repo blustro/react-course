@@ -1,3 +1,8 @@
+export interface Category {
+  label: string;
+  value: string;
+}
+
 export const CATEGORY_MAP = [
   { label: 'All', value: 'All' },
   { label: 'Apparel', value: 'apparel' },
