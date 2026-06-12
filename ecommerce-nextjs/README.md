@@ -92,3 +92,5 @@ Once both servers are running, open your browser and navigate to http://localhos
 - [x] **TypeScript Migration:** (Next Step) Achieved full strict type safety across the entire codebase.
 - [ ] Authentication
 - [ ] Payment integration (Stripe)
+
+test
